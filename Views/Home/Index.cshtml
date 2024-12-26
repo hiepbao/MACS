@@ -1,0 +1,651 @@
+﻿@using MACS.Models;
+@* @model IEnumerable<MACS.Models.VehicleLog>; *@
+@model MACS.Models.VehicleLog
+
+@{
+    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "QR Code Scanner";
+}
+
+
+
+
+<!-- header Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light rounded p-4">
+        <p class="h2 text-center">Danh sách xe chờ theo dõi</p>
+        <div class="col-md-6 mb-4">
+            <fieldset class="form-group">
+                <select class="form-select" id="basicSelect" aria-label>
+                    <option value="Ra vào kho">Ra vào kho</option>
+                    <option value="Kho ra vào">Kho ra vào</option>
+                    <option value="Vào ra kho">Vào ra kho</option>
+                </select>
+            </fieldset>
+        </div>
+        <div class="">
+            
+            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" id="qrCodeButton" data-bs-target="#qrCodeModal">
+                <i class="fas fa-qrcode me-2"></i>QRCode
+            </button>
+        </div>
+    </div>
+
+</div>
+<!-- header End -->
+
+<!-- body Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light rounded h-100 p-4">
+        <h6 class="mb-4">Basic Navs & Tabs</h6>
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+                        aria-selected="true">
+                    Xe chờ ra
+                </button>
+                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-profile" type="button" role="tab"
+                        aria-controls="nav-profile" aria-selected="false">
+                    Container chờ ra
+                </button>
+
+            </div>
+        </nav>
+        <div class="tab-content pt-3" id="nav-tabContent">
+            <!-- detai tab1 Start -->
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#formModal">Đăng ký vào</button>
+                <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#formModal2">Đăng ký ra</button>
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>STT</th>
+                                <th>@Html.DisplayNameFor(model => model.IsSelected)</th>
+                                <th>@Html.DisplayNameFor(model => model.CardNo)</th>
+                                <th>@Html.DisplayNameFor(model => model.LicensePlate)</th>
+                                <th>Số Cont</th>
+                                <th>@Html.DisplayNameFor(model => model.VehicleType)</th>
+                                <th>@Html.DisplayNameFor(model => model.DriverName)</th>
+                                <th>@Html.DisplayNameFor(model => model.PersonalId)</th>
+                                <th>@Html.DisplayNameFor(model => model.PhoneNo)</th>
+                                <th>@Html.DisplayNameFor(model => model.Purpose)</th>
+                                <th>@Html.DisplayNameFor(model => model.Remark)</th>
+                                <th>@Html.DisplayNameFor(model => model.GetInDate)</th>
+                                <th>@Html.DisplayNameFor(model => model.GetInBy)</th>
+                                <th>@Html.DisplayNameFor(model => model.IsCarriedIn)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input form-check-primary"
+                                           name="customCheck" id="customColorCheck1">
+                                </td>
+                                <td>12345</td>
+                                <td>15C-05049</td>
+                                <td>OCUU8026949</td>
+                                <td>Đầu kéo</td>
+                                <td>Bùi Công Hạnh</td>
+                                <td>03108020257</td>
+                                <td>0395676324</td>
+                                <td>Xuất kho</td>
+                                <td>Không hút thuốc</td>
+                                <td>21/11/2024 15:54</td>
+                                <td>Cong_kho</td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input form-check-primary" checked
+                                           name="customCheck" id="customColorCheck1">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input form-check-primary" checked
+                                           name="customCheck" id="customColorCheck1">
+                                </td>
+                                <td>12345</td>
+                                <td>15C-05049</td>
+                                <td>OCUU8026949</td>
+                                <td>Đầu kéo</td>
+                                <td>Bùi Công Hạnh</td>
+                                <td>03108020257</td>
+                                <td>0395676324</td>
+                                <td>Xuất kho</td>
+                                <td>Không hút thuốc</td>
+                                <td>21/11/2024 15:54</td>
+                                <td>Cong_kho</td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input form-check-primary" checked
+                                           name="customCheck" id="customColorCheck1">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input form-check-primary" checked
+                                           name="customCheck" id="customColorCheck1">
+                                </td>
+                                <td>12345</td>
+                                <td>15C-05049</td>
+                                <td>OCUU8026949</td>
+                                <td>Đầu kéo</td>
+                                <td>Bùi Công Hạnh</td>
+                                <td>03108020257</td>
+                                <td>0395676324</td>
+                                <td>Xuất kho</td>
+                                <td>Không hút thuốc</td>
+                                <td>21/11/2024 15:54</td>
+                                <td>Cong_kho</td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input form-check-primary" checked
+                                           name="customCheck" id="customColorCheck1">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input form-check-primary" checked
+                                           name="customCheck" id="customColorCheck1">
+                                </td>
+                                <td>12345</td>
+                                <td>15C-05049</td>
+                                <td>OCUU8026949</td>
+                                <td>Đầu kéo</td>
+                                <td>Bùi Công Hạnh</td>
+                                <td>03108020257</td>
+                                <td>0395676324</td>
+                                <td>Xuất kho</td>
+                                <td>Không hút thuốc</td>
+                                <td>21/11/2024 15:54</td>
+                                <td>Cong_kho</td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input form-check-primary" checked
+                                           name="customCheck" id="customColorCheck1">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input form-check-primary" checked
+                                           name="customCheck" id="customColorCheck1">
+                                </td>
+                                <td>12345</td>
+                                <td>15C-05049</td>
+                                <td>OCUU8026949</td>
+                                <td>Đầu kéo</td>
+                                <td>Bùi Công Hạnh</td>
+                                <td>03108020257</td>
+                                <td>0395676324</td>
+                                <td>Xuất kho</td>
+                                <td>Không hút thuốc</td>
+                                <td>21/11/2024 15:54</td>
+                                <td>Cong_kho</td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input form-check-primary" checked
+                                           name="customCheck" id="customColorCheck1">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- detai tab1 End -->
+
+            <!-- detai tab2 Start -->
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div class="table-responsive mt-3">
+                    <p id="message">@ViewBag.Message</p>
+                    <table class="table table-bordered">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Field</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.Result != null)
+                            {
+                                var result = ViewBag.Result as QrCodeResponse;
+
+                                <tr>
+                                    <td>Message</td>
+                                    <td>@result.Message</td>
+                                </tr>
+
+                                @if (result.Data != null && result.Data.Any())
+                                {
+                                    foreach (var item in result.Data)
+                                    {
+                                        <tr>
+                                            <td>Data</td>
+                                            <td>@item</td>
+                                        </tr>
+                                    }
+                                }
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- detai tab2 end -->
+        </div>
+    </div>
+        <!-- Kết quả tải lên -->
+        @if (ViewBag.Results != null)
+        {
+            <div class="custom-alert">
+                <h6>Kết quả:</h6>
+                <ul>
+                    @foreach (var result in (List<string>)ViewBag.Results)
+                    {
+                        <li>@result</li>
+                    }
+                </ul>
+            </div>
+        }
+    
+
+</div>
+<!-- body End -->
+
+<!-- Form creat Start -->
+<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="formModalLabel">Đăng ký vào/ra kho</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Create" method="post" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label asp-for="LicensePlate" class="form-label"></label>
+                        <input asp-for="LicensePlate" class="form-control" />
+                        <span asp-validation-for="LicensePlate" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CardNo" class="form-label"></label>
+                        <input asp-for="CardNo" class="form-control" />
+                        <span asp-validation-for="CardNo" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="PhoneNo" class="form-label"></label>
+                        <input asp-for="PhoneNo" class="form-control" />
+                        <span asp-validation-for="PhoneNo" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="DriverName" class="form-label"></label>
+                        <input asp-for="DriverName" class="form-control" />
+                        <span asp-validation-for="DriverName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="PersonalId" class="form-label"></label>
+                        <input asp-for="PersonalId" class="form-control" />
+                        <span asp-validation-for="PersonalId" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Purpose" class="form-label"></label>
+                        <input asp-for="Purpose" class="form-control" />
+                        <span asp-validation-for="Purpose" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="VehicleType" class="form-label"></label>
+                        <input asp-for="VehicleType" class="form-control" />
+                        <span asp-validation-for="VehicleType" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Remark" class="form-label"></label>
+                        <input asp-for="Remark" class="form-control" />
+                        <span asp-validation-for="Remark" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <input type="checkbox" asp-for="IsCarried" class="form-check-input form-check-danger form-check-glow" checked name="customCheck" id="customColorCheck4" style="background-color: #dc3545; border-color: #dc3545; box-shadow: 0 0 5px #e4606d;" />
+                        <label asp-for="IsCarried" class="form-label text-danger"></label>
+                        <span asp-validation-for="IsCarried" class="text-danger"></span>
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Lưu lại</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Form creat End -->
+<!-- Form edit Start -->
+<div class="modal fade" id="formModal2" tabindex="-1" aria-labelledby="formModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="formModalLabel">Đăng ký vào/ra kho</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid pt-2">
+                    <div class="bg-light rounded p-2">
+                        <p class="h6 text-center">Thông tin xe</p>
+                        <form asp-action="Edit" method="post" class="needs-validation form-control" novalidate>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label asp-for="LicensePlate" class="form-label"></label>
+                                    <input asp-for="LicensePlate" class="form-control" placeholder="Nhập biển số xe" />
+                                    <span asp-validation-for="LicensePlate" class="text-danger"></span>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label asp-for="Purpose" class="form-label"></label>
+                                    <input asp-for="Purpose" class="form-control" placeholder="Nhập mục đích" />
+                                    <span asp-validation-for="Purpose" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label asp-for="CardNo" class="form-label"></label>
+                                    <input asp-for="CardNo" class="form-control" placeholder="Nhập số thẻ" />
+                                    <span asp-validation-for="CardNo" class="text-danger"></span>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label asp-for="VehicleType" class="form-label"></label>
+                                    <input asp-for="VehicleType" class="form-control" placeholder="Nhập loại xe" />
+                                    <span asp-validation-for="VehicleType" class="text-danger"></span>
+                                </div>
+                                
+                            </div>
+                            <div class="row align-items-stretch">
+                                <div class="col-6 mb-3 d-flex flex-column">
+                                    <div class="mb-3">
+                                        <label asp-for="PhoneNo" class="form-label">Số ĐT</label>
+                                        <input asp-for="PhoneNo" class="form-control" placeholder="Nhập số điện thoại" />
+                                        <span asp-validation-for="PhoneNo" class="text-danger"></span>
+                                    </div>
+                                    <div class="">
+                                        <label asp-for="DriverName" class="form-label">Tên TX</label>
+                                        <input asp-for="DriverName" class="form-control" placeholder="Nhập tên tài xế" />
+                                        <span asp-validation-for="DriverName" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 ">
+                                    <label asp-for="Remark" class="form-label">Ghi chú</label>
+                                    <textarea asp-for="Remark" class="form-control h-75" placeholder="Nhập ghi chú"></textarea>
+                                    <span asp-validation-for="Remark" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label asp-for="PersonalId" class="form-label"></label>
+                                    <input asp-for="PersonalId" class="form-control" placeholder="Nhập CMND/CCCD" />
+                                    <span asp-validation-for="PersonalId" class="text-danger"></span>
+                                </div>
+                                <div class="form-check col-6 mb-3 d-flex align-items-center">
+                                    <input type="checkbox" asp-for="IsCarried" class="form-check-input form-check-danger form-check-glow" checked name="customCheck" id="customColorCheck4" />
+                                    <label asp-for="IsCarried" class="form-label text-danger ms-2"></label>
+                                    <span asp-validation-for="IsCarried" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-check col-6 mb-3 d-flex align-items-center">
+                                    <input type="checkbox" asp-for="IsCarried" class="form-check-input form-check-danger form-check-glow" name="customCheck" id="hasContainerIn" />
+                                    <label class="form-label text-danger ms-2">Có kéo container vào</label>
+                                    <span asp-validation-for="IsCarried" class="text-danger"></span>
+                                </div>
+                                <div class="form-check col-6 mb-3 d-flex align-items-center">
+                                    <input type="checkbox" asp-for="IsCarried" class="form-check-input form-check-danger form-check-glow" name="customCheck" id="hasContainerOut" />
+                                    <label class="form-label text-danger ms-2">Có kéo container ra</label>
+                                    <span asp-validation-for="IsCarried" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                
+                <div class="container-fluid pt-2 d-none" id="containerIn">
+                    <div class="bg-light rounded p-2" >
+                        <p class="h6 text-center">Danh sách container vào theo xe</p>
+                        <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+                            <div class="table-responsive mt-3">
+                                <table class="table table-bordered">
+                                    <thead class="table-active">
+                                        <tr>
+                                            <th>Chọn</th>
+                                            <th>Số Cont</th>
+                                            <th>Loại Cont</th>
+                                            <th>Số Seal</th>
+                                            <th>Số Seal HQ</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox"
+                                                       class="form-check-input form-check-primary"
+                                                       name="customCheck" id="customColorCheck1">
+                                            </td>
+                                            <td>OCUU8026949</td>
+                                            <td>40DC</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="container-fluid pt-2 d-none" id="containerOut">
+                    <div class="bg-light rounded p-2">
+                        <p class="h6 text-center">Danh sách container ra theo xe</p>
+                        <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+                            <div class="table-responsive mt-3">
+                                <table class="table table-bordered">
+                                    <thead class="table-active">
+                                        <tr>
+                                            <th>Chọn</th>
+                                            <th>Số Cont</th>
+                                            <th>Loại Cont</th>
+                                            <th>Số Seal</th>
+                                            <th>Số Seal HQ</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox"
+                                                       class="form-check-input form-check-primary"
+                                                       name="customCheck" id="customColorCheck1">
+                                            </td>
+                                            <td>OCUU8026949</td>
+                                            <td>40DC</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="formModal2" class="btn btn-primary">Lưu lại</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<!-- Form Edit End -->
+
+
+<!-- Modal QR Code -->
+<div class="modal fade" id="qrCodeModal" tabindex="-1" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="qrCodeModalLabel">Quét QR Code</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <video id="camera" autoplay class="w-100 h-auto border border-secondary rounded" onclick="toggleFullScreen(this)"></video>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                </div>
+                <form id="uploadForm" method="post" enctype="multipart/form-data" asp-action="ScanQR">
+                    <input type="file" id="imageInput" name="qrImage" style="display: none;">
+                    <button type="submit" style="display: none;" id="submitButton">Upload</button>
+                </form>
+            </div>
+            <button id="switchCamera" class="btn btn-primary mt-3">Switch Camera</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="submit" class="btn btn-primary" id="captureButton" form="qrCodeForm">Gửi</button>
+            </div>
+           
+
+        </div>
+    </div>
+</div>
+<!-- Modal QR Code -->
+
+<script>
+    //xử lý video 
+    const video = document.getElementById('camera');
+    const canvas = document.getElementById('canvas');
+    const captureButton = document.getElementById('captureButton');
+    const imageInput = document.getElementById('imageInput');
+    const submitButton = document.getElementById('submitButton');
+    const switchCameraButton = document.getElementById('switchCamera');
+    const qrCodeButton = document.getElementById('qrCodeButton');
+
+    let currentStream; // Lưu trữ stream hiện tại
+    let isFrontCamera = true; // Mặc định là camera trước
+
+    // Hàm khởi tạo camera
+    async function startCamera() {
+        if (currentStream) {
+            // Dừng tất cả các track của stream hiện tại
+            currentStream.getTracks().forEach(track => track.stop());
+        }
+
+        const constraints = {
+            video: {
+                facingMode: isFrontCamera ? 'user' : 'environment', // Camera trước (user) hoặc camera sau (environment)
+            },
+        };
+
+        try {
+            // Yêu cầu quyền truy cập camera
+            currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+            video.srcObject = currentStream;
+        } catch (err) {
+            console.error('Error accessing camera:', err);
+            document.getElementById('message').innerText =
+                'Unable to access camera. Please check your device permissions.';
+        }
+    }
+
+    // Sự kiện nhấn nút chụp ảnh
+    captureButton.addEventListener('click', () => {
+        const context = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        // Chụp ảnh từ video stream
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Chuyển ảnh từ canvas thành file và gắn vào form
+        canvas.toBlob(
+            blob => {
+                const file = new File([blob], 'capture.png', { type: 'image/png' });
+
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                imageInput.files = dataTransfer.files;
+
+                // Tự động submit form
+                submitButton.click();
+            },
+            'image/png'
+        );
+    });
+
+    // Sự kiện nhấn nút chuyển đổi camera
+    switchCameraButton.addEventListener('click', () => {
+        isFrontCamera = !isFrontCamera; // Đổi trạng thái camera
+        startCamera(); // Khởi động lại camera
+    });
+
+    // Hàm bật chế độ toàn màn hình
+    function toggleFullScreen(videoElement) {
+        if (videoElement.requestFullscreen) {
+            videoElement.requestFullscreen();
+        } else if (videoElement.webkitRequestFullscreen) {
+            videoElement.webkitRequestFullscreen();
+        } else if (videoElement.msRequestFullscreen) {
+            videoElement.msRequestFullscreen();
+        }
+    }
+
+    // Sự kiện nhấn nút QRCode để khởi động camera
+    qrCodeButton.addEventListener('click', () => {
+        startCamera(); // Bắt đầu camera khi mở modal
+    });
+
+    // Tắt camera khi đóng modal
+    const qrCodeModal = document.getElementById('qrCodeModal');
+    qrCodeModal.addEventListener('hidden.bs.modal', () => {
+        if (currentStream) {
+            currentStream.getTracks().forEach(track => track.stop()); // Dừng camera
+        }
+    });
+
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const containerIn = document.getElementById("containerIn");
+        const containerOut = document.getElementById("containerOut");
+        const hasContainerIn = document.getElementById("hasContainerIn");
+        const hasContainerOut = document.getElementById("hasContainerOut");
+
+        function toggleContainerTable() {
+            if (hasContainerIn.checked) {
+                containerIn.classList.remove("d-none");
+            } else {
+                containerIn.classList.add("d-none");
+            }
+        }
+        function toggleContainerTable2() {
+            if (hasContainerOut.checked) {
+                containerOut.classList.remove("d-none");
+            } else {
+                containerOut.classList.add("d-none");
+            }
+        }
+
+        hasContainerIn.addEventListener("change", toggleContainerTable);
+        hasContainerOut.addEventListener("change", toggleContainerTable2);
+
+        
+    });
+</script>

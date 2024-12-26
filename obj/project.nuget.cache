@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "llruEmq2bcd1L/Gx8UoIQSYiql4uLX5oborIxDwOjc8QBjdFZ0NB2HLjdDsKvezaT1I79fz5Oj0MGlwOPZfWRg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\cubi2\\OneDrive\\Máy tính\\lamviec\\MACS\\MACS.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\cubi2\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.3.0\\microsoft.identitymodel.abstractions.8.3.0.nupkg.sha512",
+    "C:\\Users\\cubi2\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.3.0\\microsoft.identitymodel.jsonwebtokens.8.3.0.nupkg.sha512",
+    "C:\\Users\\cubi2\\.nuget\\packages\\microsoft.identitymodel.logging\\8.3.0\\microsoft.identitymodel.logging.8.3.0.nupkg.sha512",
+    "C:\\Users\\cubi2\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.3.0\\microsoft.identitymodel.tokens.8.3.0.nupkg.sha512",
+    "C:\\Users\\cubi2\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.3.0\\system.identitymodel.tokens.jwt.8.3.0.nupkg.sha512"
+  ],
+  "logs": []
+}

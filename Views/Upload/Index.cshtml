@@ -1,0 +1,151 @@
+﻿@model List<UploadHistoryRecord>
+
+@{
+    ViewData["Title"] = "Upload History";
+}
+
+<style>
+    .custom-alert {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #f8d7da;
+        color: #842029;
+        border: 1px solid #f5c2c7;
+        border-radius: 8px;
+        padding: 15px 20px;
+        font-size: 14px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1050; /* Hiển thị trên modal */
+        animation: fadeOut 5s forwards;
+    }
+
+    @@keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+
+        90% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
+</style>
+
+<!-- header Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light rounded p-4">
+        <p class="h2 text-center">Danh sách xe chờ theo dõi</p>
+        <div class="col-md-6 mb-4">
+            <fieldset class="form-group">
+                <select class="form-select" id="basicSelect" aria-label>
+                    <option value="Ra vào kho">Ra vào kho</option>
+                    <option value="Kho ra vào">Kho ra vào</option>
+                    <option value="Vào ra kho">Vào ra kho</option>
+                </select>
+            </fieldset>
+        </div>
+        <div class="">
+
+            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#formModal3">
+                <i class="fas fa-plus me-2"></i>Thêm file
+            </button>
+        </div>
+    </div>
+
+</div>
+<!-- header End -->
+<!-- body Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light rounded h-100 p-4">
+        <h5 class=" text-center">Lịch sử Upload</h5>
+        
+        <div class="tab-content pt-3" id="nav-tabContent">
+            <!-- detai tab1 Start -->
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Người dùng</th>
+                                <th>Tên file</th>
+                                <th>Dung lượng KB</th>
+                                <th>Số file</th>
+                                <th>Thời gian</th>
+                                <th>Danh sách file</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var record in Model)
+                            {
+                                <tr>
+                                    <td>@record.FullName</td>
+                                    <td>@record.FileName</td>
+                                    <td>@record.FileSizeKB</td>
+                                    <td>@record.FileCount</td>
+                                    <td>@record.UploadTime</td>
+                                    <td>
+                                        <ul>
+                                            @foreach (var file in record.FileList)
+                                            {
+                                                <li>@file</li>
+                                            }
+                                        </ul>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- detai tab1 End -->
+        </div>
+    </div>
+    <!-- Kết quả tải lên -->
+    @if (ViewBag.Results != null)
+    {
+        <div class="custom-alert">
+            <h6>Kết quả:</h6>
+            <ul>
+                @foreach (var result in (List<string>)ViewBag.Results)
+                {
+                    <li>@result</li>
+                }
+            </ul>
+        </div>
+    }
+
+
+</div>
+<!-- body End -->
+<!-- Form add file Start -->
+<div class="modal fade" id="formModal3" tabindex="-1" aria-labelledby="formModalLabel3" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content" style="max-height: 50vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="formModalLabel3">Tải lên file .zip</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="Upload" asp-action="Index" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="zipFiles" class="form-label">Chọn các file .zip</label>
+                        <input class="form-control" type="file" id="zipFiles" name="zipFiles" accept=".zip" multiple required>
+                        <div class="invalid-feedback">
+                            Vui lòng chọn ít nhất một file .zip để tải lên.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Tải lên</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Form add file End -->
