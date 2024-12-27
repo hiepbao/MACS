@@ -502,7 +502,7 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <video id="camera" autoplay class="w-100 h-auto border border-secondary rounded" onclick="toggleFullScreen(this)"></video>
+                    <video id="camera" autoplay class="w-100 h-auto border border-secondary rounded" ></video>
                     <canvas id="canvas" style="display: none;"></canvas> 
                 </div>
 
@@ -533,7 +533,7 @@
     const message = document.getElementById('message');
 
     let currentStream; // Lưu trữ stream hiện tại
-    let isFrontCamera = true; // Mặc định là camera trước
+    let isFrontCamera = false; // Mặc định là camera trước
     let qrDetected = false; // Trạng thái nhận diện QR Code
 
 
@@ -550,7 +550,7 @@
                 // độ phân giải
                 width: { ideal: 1920 }, 
                 height: { ideal: 1080 }, 
-                frameRate: { ideal: 30 }, 
+                frameRate: { ideal: 60 }, 
             },
         };
 
