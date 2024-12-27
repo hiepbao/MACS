@@ -36,3 +36,4 @@ C:\Users\cubi2\OneDrive\Máy tính\lamviec\MACS\bin\Debug\net8.0\Microsoft.Ident
 C:\Users\cubi2\OneDrive\Máy tính\lamviec\MACS\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\cubi2\OneDrive\Máy tính\lamviec\MACS\obj\Debug\net8.0\MACS.csproj.AssemblyReference.cache
 C:\Users\cubi2\OneDrive\Máy tính\lamviec\MACS\obj\Debug\net8.0\MACS.csproj.Up2Date
+C:\Users\cubi2\OneDrive\Máy tính\lamviec\MACS\bin\Debug\net8.0\Newtonsoft.Json.dll

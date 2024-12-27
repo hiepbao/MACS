@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "llruEmq2bcd1L/Gx8UoIQSYiql4uLX5oborIxDwOjc8QBjdFZ0NB2HLjdDsKvezaT1I79fz5Oj0MGlwOPZfWRg==",
+  "dgSpecHash": "R21GNDC8xZuVXUaq/W2lHS+mPI7iYuLUq5hgINl2+h9hy3IYXTqxRnBmxIwHDBfOgO/LBD5q/VF5ZY4jii+UdA==",
   "success": true,
   "projectFilePath": "C:\\Users\\cubi2\\OneDrive\\Máy tính\\lamviec\\MACS\\MACS.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\cubi2\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.3.0\\microsoft.identitymodel.jsonwebtokens.8.3.0.nupkg.sha512",
     "C:\\Users\\cubi2\\.nuget\\packages\\microsoft.identitymodel.logging\\8.3.0\\microsoft.identitymodel.logging.8.3.0.nupkg.sha512",
     "C:\\Users\\cubi2\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.3.0\\microsoft.identitymodel.tokens.8.3.0.nupkg.sha512",
+    "C:\\Users\\cubi2\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\cubi2\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.3.0\\system.identitymodel.tokens.jwt.8.3.0.nupkg.sha512"
   ],
   "logs": []

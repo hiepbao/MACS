@@ -36,17 +36,109 @@ namespace MACS.Controllers
             {
                 var result = await _qrCodeService.ScanQRCodeAsync(qrImage);
 
-                ViewBag.Message = result.Message ?? "QR Scan Successful!";
-                ViewBag.Result = result;
+                if (result != null && result.Data != null && result.Data is List<string> dataList)
+                {
+                    // Convert data list to a dictionary
+                    var dataDict = dataList
+                        .Select(item => item.Split(":"))
+                        .Where(parts => parts.Length > 1)
+                        .ToDictionary(parts => parts[0].Trim().ToLower(), parts => parts[1].Trim());
 
-                return View("Index");
+                    if (dataDict.ContainsKey("message"))
+                    {
+                        var message = dataDict["message"].ToLower();
+
+                        if (message == "xuất kho")
+                        {
+                            TempData["Result"] = Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                            return RedirectToAction("Warehouse");
+                        }
+                        else if (message == "xe ra")
+                        {
+                            TempData["Result"] = Newtonsoft.Json.JsonConvert.SerializeObject(result); 
+                            return RedirectToAction("CheckOut");
+                        }
+                        else
+                        {
+                            ViewBag.Message = "Lỗi: QR không hợp lệ.";
+                            return View("Index");
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Lỗi: Không tìm thấy trường 'message' trong QR.";
+                        return View("Index");
+                    }
+                }
+                else
+                {
+                    ViewBag.Message = "Lỗi: Không thể đọc dữ liệu từ QR.";
+                    return View("Index");
+                }
             }
             catch (Exception ex)
             {
-                ViewBag.Message = $"Error: {ex.Message}";
+                ViewBag.Message = "Đã xảy ra lỗi trong quá trình quét QR: " + ex.Message;
                 return View("Index");
             }
+
+
         }
+
+
+        [HttpGet]
+        public IActionResult WareHouse()
+        {
+            if (TempData["Result"] != null)
+            {
+                var jsonString = TempData["Result"] as string;
+                if (!string.IsNullOrEmpty(jsonString))
+                {
+                    try
+                    {
+                        // Deserialize JSON thành QrCodeResponse
+                        var resultObject = Newtonsoft.Json.JsonConvert.DeserializeObject<QrCodeResponse>(jsonString);
+                        return View(resultObject); // Truyền đúng model vào view
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log lỗi nếu cần
+                        TempData["Error"] = "Lỗi khi xử lý JSON: " + ex.Message;
+                    }
+                }
+            }
+
+            // Truyền một model mặc định nếu không có dữ liệu
+            return View(new QrCodeResponse());
+        }
+
+        [HttpGet]
+        public IActionResult CheckOut()
+        {
+            if (TempData["Result"] != null)
+            {
+                var jsonString = TempData["Result"] as string;
+                if (!string.IsNullOrEmpty(jsonString))
+                {
+                    try
+                    {
+                        // Deserialize JSON thành QrCodeResponse
+                        var resultObject = Newtonsoft.Json.JsonConvert.DeserializeObject<QrCodeResponse>(jsonString);
+                        return View(resultObject); // Truyền đúng model vào view
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log lỗi nếu cần
+                        TempData["Error"] = "Lỗi khi xử lý JSON: " + ex.Message;
+                    }
+                }
+            }
+
+            // Truyền một model mặc định nếu không có dữ liệu
+            return View(new QrCodeResponse());
+        }
+
+
 
 
 
