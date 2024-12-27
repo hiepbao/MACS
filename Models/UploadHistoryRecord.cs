@@ -11,4 +11,11 @@
         public List<string>? FileList { get; set; }
     }
 
+    public class FileResultModel
+    {
+        public string FileName { get; set; }       // Tên file gốc
+        public long FileSize { get; set; }        // Kích thước file (byte)
+        public List<string> InnerFiles { get; set; } // Danh sách file bên trong zip
+    }
+
 }
