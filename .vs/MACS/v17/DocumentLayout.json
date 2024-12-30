@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|c:\\users\\cubi2\\onedrive\\m\u00E1y t\u00EDnh\\lamviec\\macs\\views\\home\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|solutionrelative:views\\home\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|c:\\users\\cubi2\\onedrive\\m\u00E1y t\u00EDnh\\lamviec\\macs\\views\\home\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|solutionrelative:views\\home\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -22,15 +26,28 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Views\\Home\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Views\\Home\\Edit.cshtml",
+              "RelativeToolTip": "Views\\Home\\Edit.cshtml",
+              "ViewState": "AQIAAE4AAAAAAAAAAAAAAGUAAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-30T08:17:33.063Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
@@ -43,7 +60,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "HomeController.cs",
               "DocumentMoniker": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
@@ -51,18 +68,38 @@
               "RelativeToolTip": "Controllers\\HomeController.cs",
               "ViewState": "AQIAAAMAAAAAAAAAAAAAABQAAAARAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-30T07:33:01.167Z",
-              "EditorCaption": ""
-            },
+              "WhenOpened": "2024-12-30T07:33:01.167Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "FloatingWindowState": {
+        "Id": "88877576-968f-43f2-ae45-c951fbdd94e4",
+        "Display": 1,
+        "X": 167,
+        "Y": 336,
+        "Width": 1060,
+        "Height": 502,
+        "WindowState": 2
+      },
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Views\\Home\\Create.cshtml",
               "RelativeDocumentMoniker": "Views\\Home\\Create.cshtml",
               "ToolTip": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Views\\Home\\Create.cshtml",
               "RelativeToolTip": "Views\\Home\\Create.cshtml",
-              "ViewState": "AQIAAJ8AAAAAAAAAAAAAALQAAAA8AAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAhAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-12-30T08:07:09.976Z",
               "EditorCaption": ""
