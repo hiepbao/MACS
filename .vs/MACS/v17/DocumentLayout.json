@@ -26,8 +26,12 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -36,14 +40,10 @@
               "RelativeDocumentMoniker": "Views\\Home\\Edit.cshtml",
               "ToolTip": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Views\\Home\\Edit.cshtml",
               "RelativeToolTip": "Views\\Home\\Edit.cshtml",
-              "ViewState": "AQIAAE4AAAAAAAAAAAAAAGUAAAAiAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAyAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-12-30T08:17:33.063Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
             },
             {
               "$type": "Document",
@@ -55,8 +55,7 @@
               "RelativeToolTip": "Views\\Home\\Index.cshtml",
               "ViewState": "AQIAAGABAAAAAAAAAAAkwHYBAAAsAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-12-30T07:44:06.533Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-30T07:44:06.533Z"
             },
             {
               "$type": "Document",
@@ -84,7 +83,7 @@
         "Y": 336,
         "Width": 1060,
         "Height": 502,
-        "WindowState": 2
+        "WindowState": 0
       },
       "DocumentGroups": [
         {
@@ -99,7 +98,7 @@
               "RelativeDocumentMoniker": "Views\\Home\\Create.cshtml",
               "ToolTip": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Views\\Home\\Create.cshtml",
               "RelativeToolTip": "Views\\Home\\Create.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAhAAAA",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAA8AAAAhAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-12-30T08:07:09.976Z",
               "EditorCaption": ""
