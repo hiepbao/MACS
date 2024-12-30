@@ -131,7 +131,7 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <video id="camera" autoplay class="w-100 h-auto border border-secondary rounded"></video>
+                    <video id="camera" autoplay playsinline muted class="w-100 h-auto border border-secondary rounded"></video>
                     <canvas id="canvas" style="display: none;"></canvas>
                     <p id="message" class="text-danger mt-3"></p> <!-- Thông báo trạng thái -->
                 </div>
@@ -169,8 +169,8 @@
             const constraints = {
                 video: {
                     facingMode: isFrontCamera ? 'user' : 'environment',
-                    // width: { ideal: 1920 },
-                    // height: { ideal: 1080 },
+                    width: { ideal: 1920 },
+                    height: { ideal: 1080 },
                     frameRate: { ideal: 60 },
                 },
             };

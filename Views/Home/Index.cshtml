@@ -326,14 +326,15 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <video id="camera" autoplay class="w-100 h-auto border border-secondary rounded" ></video>
+                    <video id="camera" autoplay playsinline muted class="w-100 h-auto border border-secondary rounded"></video>
                     <canvas id="canvas" style="display: none;"></canvas> 
+                    <p id="message" class="text-danger mt-3"></p>
                 </div>
 
-                <form id="uploadForm" method="post" enctype="multipart/form-data" asp-action="ScanQR">
+                @* <form id="uploadForm" method="post" enctype="multipart/form-data" asp-action="ScanQR">
                     <input type="file" id="imageInput" name="qrImage" style="display: none;"> 
                     <button type="submit" style="display: none;" id="submitButton">Upload</button> 
-                </form>
+                </form> *@
             </div>
 
             <div class="modal-footer">
@@ -346,47 +347,45 @@
 
 <script>
     //xử lý video
+    let currentStream = null;
+    let isFrontCamera = false;
+    let scanning = false;
+    let qrDetected = false;
+
     const video = document.getElementById('camera');
     const canvas = document.getElementById('canvas');
-    const captureButton = document.getElementById('captureButton');
-    const imageInput = document.getElementById('imageInput');
-    const submitButton = document.getElementById('submitButton');
     const switchCameraButton = document.getElementById('switchCamera');
     const qrCodeButton = document.getElementById('qrCodeButton');
     const qrCodeButton1 = document.getElementById('qrCodeButton1');
     const qrCodeModal = document.getElementById('qrCodeModal');
     const message = document.getElementById('message');
+    const cardNoInput = document.getElementById('cardNoInput');
 
-    let currentStream; // Lưu trữ stream hiện tại
-    let isFrontCamera = false; // Mặc định là camera trước
-    let qrDetected = false; // Trạng thái nhận diện QR Code
-    let lastQRCode = '';
-
-
-    // Hàm khởi tạo camera
+    // Hàm khởi động camera
     async function startCamera() {
-        if (currentStream) {
-            // Dừng tất cả các track của stream hiện tại
-            currentStream.getTracks().forEach(track => track.stop());
-        }
-
-        const constraints = {
-            video: {
-                facingMode: isFrontCamera ? 'user' : 'environment', // Camera trước hoặc sau
-                // độ phân giải
-                width: { ideal: 1920 }, 
-                height: { ideal: 1080 }, 
-                frameRate: { ideal: 60 }, 
-            },
-        };
-
         try {
+            if (currentStream) {
+                currentStream.getTracks().forEach((track) => track.stop());
+            }
+
+            const constraints = {
+                video: {
+                    facingMode: isFrontCamera ? 'user' : 'environment',
+                    width: { ideal: 1920 },
+                    height: { ideal: 1080 },
+                    frameRate: { ideal: 60 },
+                },
+            };
+
             currentStream = await navigator.mediaDevices.getUserMedia(constraints);
             video.srcObject = currentStream;
-            // Đợi video sẵn sàng
+
             video.addEventListener('loadedmetadata', () => {
                 video.play();
-                scanQRCode(); 
+                if (!scanning) {
+                    scanning = true;
+                    scanQRCode();
+                }
             });
         } catch (err) {
             console.error('Error accessing camera:', err);
@@ -394,115 +393,73 @@
         }
     }
 
+    // Hàm dừng camera
+    function stopCamera() {
+        scanning = false;
+        if (currentStream) {
+            currentStream.getTracks().forEach((track) => track.stop());
+            currentStream = null;
+        }
+    }
+
     // Hàm quét QR Code
     function scanQRCode() {
-        const context = canvas.getContext('2d');
+        const context = canvas.getContext('2d', { willReadFrequently: true });
 
         const scan = () => {
+            if (!scanning) return;
+
             if (video.videoWidth === 0 || video.videoHeight === 0) {
                 requestAnimationFrame(scan);
                 return;
             }
 
-            // Vẽ khung hình hiện tại của video lên canvas
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            // Lấy dữ liệu hình ảnh từ canvas
             const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-
-            // Sử dụng thư viện jsQR để quét mã QR
             const code = jsQR(imageData.data, imageData.width, imageData.height);
 
             if (code) {
-                lastQRCode = code.data; // Lưu mã QR đã quét
                 qrDetected = true;
+                lastQRCode = code.data; // Lưu mã QR đã quét
+
                 console.log('QR Code detected:', code.data);
 
                 // Đóng modal và chuyển hướng
                 bootstrap.Modal.getInstance(document.getElementById('qrCodeModal')).hide();
                 location.href = `/Home/Edit/${code.data}`;
-
-                // // Gửi hình ảnh khi mã QR đã được xác định
-                // if (qrDetected) {
-                //     // Chụp ảnh từ video stream để gửi API
-                //     canvas.toBlob(
-                //         blob => {
-                //             const file = new File([blob], 'capture.png', { type: 'image/png' });
-
-                //             const dataTransfer = new DataTransfer();
-                //             dataTransfer.items.add(file);
-                //             imageInput.files = dataTransfer.files;
-
-                //             // Submit form tự động
-                //             submitButton.click();
-                //         },
-                //         'image/png',
-                //         1.0 // Chất lượng cao nhất
-                //     );
-
-                //     // Ngừng quét sau khi phát hiện mã QR
-                //     qrDetected = false;
-                //     return;
-                // }
             } else {
-                qrDetected = false;
                 message.innerText = 'Không tìm thấy mã QR, vui lòng giữ camera ổn định...';
             }
 
-            // Lặp lại quét nếu chưa tìm thấy mã QR
-            requestAnimationFrame(scan);
+            if (scanning) {
+                requestAnimationFrame(scan);
+            }
         };
 
         scan();
     }
 
-    // Sự kiện nhấn nút chuyển đổi camera
+    // Sự kiện chuyển đổi camera
     switchCameraButton.addEventListener('click', () => {
         isFrontCamera = !isFrontCamera;
-        startCamera(); 
+        stopCamera();
+        startCamera();
     });
 
-    // Sự kiện nhấn nút QRCode để khởi động camera
+    // Sự kiện mở modal để bắt đầu camera
     qrCodeButton.addEventListener('click', () => {
-        startCamera(); 
+        startCamera();
     });
     qrCodeButton1.addEventListener('click', () => {
         startCamera();
     });
 
-    // Tắt camera khi đóng modal
+    // Sự kiện đóng modal để dừng camera
     qrCodeModal.addEventListener('hidden.bs.modal', () => {
-        if (currentStream) {
-            currentStream.getTracks().forEach(track => track.stop());
-        }
-    });
-
-    // Xử lý hiển thị container
-    document.addEventListener("DOMContentLoaded", function () {
-        const containerIn = document.getElementById("containerIn");
-        const containerOut = document.getElementById("containerOut");
-        const hasContainerIn = document.getElementById("hasContainerIn");
-        const hasContainerOut = document.getElementById("hasContainerOut");
-
-        function toggleContainerTable() {
-            if (hasContainerIn.checked) {
-                containerIn.classList.remove("d-none");
-            } else {
-                containerIn.classList.add("d-none");
-            }
-        }
-        function toggleContainerTable2() {
-            if (hasContainerOut.checked) {
-                containerOut.classList.remove("d-none");
-            } else {
-                containerOut.classList.add("d-none");
-            }
-        }
-
-        hasContainerIn.addEventListener("change", toggleContainerTable);
-        hasContainerOut.addEventListener("change", toggleContainerTable2);
+        stopCamera();
     });
 </script>
 
