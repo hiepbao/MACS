@@ -20,6 +20,12 @@ namespace MACS.Services
             var historyCars = await _httpClient.GetFromJsonAsync<List<HistoryCar>>(apiUrl);
             return historyCars ?? new List<HistoryCar>();
         }
+        public async Task<List<HistoryCar>> GetAllHistoryCarsInAsync()
+        {
+            var apiUrl = $"{ApiBaseUrl}/api/HistoryCar/GetHistoryCarsIn";
+            var historyCars = await _httpClient.GetFromJsonAsync<List<HistoryCar>>(apiUrl);
+            return historyCars ?? new List<HistoryCar>();
+        }
 
         public async Task<HistoryCar?> GetHistoryCarByCardNoAsync(string cardNo)
         {

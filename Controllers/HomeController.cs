@@ -21,15 +21,19 @@ namespace MACS.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var historyCars = await _historyCarService.GetAllHistoryCarsAsync();
+            var allHistoryCars = await _historyCarService.GetAllHistoryCarsAsync();
+            var waitingCars = await _historyCarService.GetAllHistoryCarsInAsync();
 
-            if (historyCars == null)
+            ViewBag.WaitingCars = waitingCars ?? new List<HistoryCar>();
+
+            if (allHistoryCars == null)
             {
                 return View(new List<HistoryCar>());
             }
 
-            return View(historyCars);
+            return View(allHistoryCars);
         }
+
 
         public IActionResult Create()
         {
