@@ -1,13 +1,19 @@
-using MACS.Models;
+﻿using MACS.Models;
 using MACS.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MACS.Data;
+using MACS.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpClient<UploadHistoryService>();
 builder.Services.AddHttpClient<QRCodeService>();
 builder.Services.AddHttpClient<AuthService>();
+builder.Services.AddHttpClient<HistoryCarService>();
+builder.Services.AddHttpClient<HomeController>();
+
 builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiBaseUrl"));
 
 builder.Services.AddCors(options =>
@@ -50,6 +56,6 @@ app.UseRouting();
 app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{cardNo?}");
 
 app.Run();

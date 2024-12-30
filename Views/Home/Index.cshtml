@@ -1,11 +1,75 @@
 ﻿@using MACS.Models;
 @* @model IEnumerable<MACS.Models.VehicleLog>; *@
-@model MACS.Models.VehicleLog
-
+@model dynamic;
 @{
     ViewData["Title"] = "Home Page";
 }
+<style>
+    .custom-alert {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        min-width: 300px;
+        padding: 15px 20px;
+        font-size: 14px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1050;
+        opacity: 0; /* Ẩn ban đầu */
+        transform: translateY(20px); /* Đẩy xuống một chút */
+        animation: fadeIn 0.5s forwards, fadeOut 5s forwards 4.5s; /* Fade in và fade out */
+    }
 
+    /* Màu sắc cho từng loại thông báo */
+    .custom-alert.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .custom-alert.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    .custom-alert.info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+    }
+
+    .custom-alert.warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+    }
+
+    /* Hiệu ứng fade-in */
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Hiệu ứng fade-out */
+    @@keyframes fadeOut {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+    }
+
+</style>
 
 <!-- header Start -->
 <div class="container-fluid pt-4 px-4">
@@ -53,151 +117,88 @@
         <div class="tab-content pt-3" id="nav-tabContent">
             <!-- detai tab1 Start -->
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#formModal">Đăng ký vào</button>
-                <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#formModal2">Đăng ký ra</button>
+                <button type="button" class="btn btn-primary m-2" onclick="location.href='/Home/Create'">Đăng ký vào</button>
+
+                <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" id="qrCodeButton1" data-bs-target="#qrCodeModal">
+                    <i class="fas fa-qrcode me-2"></i>Đăng ký ra
+                </button>
+
                 <div class="table-responsive mt-3">
-                    <table class="table table-bordered">
-                        <thead class="table-primary">
-                            <tr>
-                                <th>STT</th>
-                                <th>@Html.DisplayNameFor(model => model.IsSelected)</th>
-                                <th>@Html.DisplayNameFor(model => model.CardNo)</th>
-                                <th>@Html.DisplayNameFor(model => model.LicensePlate)</th>
-                                <th>Số Cont</th>
-                                <th>@Html.DisplayNameFor(model => model.VehicleType)</th>
-                                <th>@Html.DisplayNameFor(model => model.DriverName)</th>
-                                <th>@Html.DisplayNameFor(model => model.PersonalId)</th>
-                                <th>@Html.DisplayNameFor(model => model.PhoneNo)</th>
-                                <th>@Html.DisplayNameFor(model => model.Purpose)</th>
-                                <th>@Html.DisplayNameFor(model => model.Remark)</th>
-                                <th>@Html.DisplayNameFor(model => model.GetInDate)</th>
-                                <th>@Html.DisplayNameFor(model => model.GetInBy)</th>
-                                <th>@Html.DisplayNameFor(model => model.IsCarriedIn)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>
-                                    <input type="checkbox"
-                                           class="form-check-input form-check-primary"
-                                           name="customCheck" id="customColorCheck1">
-                                </td>
-                                <td>12345</td>
-                                <td>15C-05049</td>
-                                <td>OCUU8026949</td>
-                                <td>Đầu kéo</td>
-                                <td>Bùi Công Hạnh</td>
-                                <td>03108020257</td>
-                                <td>0395676324</td>
-                                <td>Xuất kho</td>
-                                <td>Không hút thuốc</td>
-                                <td>21/11/2024 15:54</td>
-                                <td>Cong_kho</td>
-                                <td>
-                                    <input type="checkbox"
-                                           class="form-check-input form-check-primary" checked
-                                           name="customCheck" id="customColorCheck1">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>
-                                    <input type="checkbox"
-                                           class="form-check-input form-check-primary" checked
-                                           name="customCheck" id="customColorCheck1">
-                                </td>
-                                <td>12345</td>
-                                <td>15C-05049</td>
-                                <td>OCUU8026949</td>
-                                <td>Đầu kéo</td>
-                                <td>Bùi Công Hạnh</td>
-                                <td>03108020257</td>
-                                <td>0395676324</td>
-                                <td>Xuất kho</td>
-                                <td>Không hút thuốc</td>
-                                <td>21/11/2024 15:54</td>
-                                <td>Cong_kho</td>
-                                <td>
-                                    <input type="checkbox"
-                                           class="form-check-input form-check-primary" checked
-                                           name="customCheck" id="customColorCheck1">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>
-                                    <input type="checkbox"
-                                           class="form-check-input form-check-primary" checked
-                                           name="customCheck" id="customColorCheck1">
-                                </td>
-                                <td>12345</td>
-                                <td>15C-05049</td>
-                                <td>OCUU8026949</td>
-                                <td>Đầu kéo</td>
-                                <td>Bùi Công Hạnh</td>
-                                <td>03108020257</td>
-                                <td>0395676324</td>
-                                <td>Xuất kho</td>
-                                <td>Không hút thuốc</td>
-                                <td>21/11/2024 15:54</td>
-                                <td>Cong_kho</td>
-                                <td>
-                                    <input type="checkbox"
-                                           class="form-check-input form-check-primary" checked
-                                           name="customCheck" id="customColorCheck1">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>
-                                    <input type="checkbox"
-                                           class="form-check-input form-check-primary" checked
-                                           name="customCheck" id="customColorCheck1">
-                                </td>
-                                <td>12345</td>
-                                <td>15C-05049</td>
-                                <td>OCUU8026949</td>
-                                <td>Đầu kéo</td>
-                                <td>Bùi Công Hạnh</td>
-                                <td>03108020257</td>
-                                <td>0395676324</td>
-                                <td>Xuất kho</td>
-                                <td>Không hút thuốc</td>
-                                <td>21/11/2024 15:54</td>
-                                <td>Cong_kho</td>
-                                <td>
-                                    <input type="checkbox"
-                                           class="form-check-input form-check-primary" checked
-                                           name="customCheck" id="customColorCheck1">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>
-                                    <input type="checkbox"
-                                           class="form-check-input form-check-primary" checked
-                                           name="customCheck" id="customColorCheck1">
-                                </td>
-                                <td>12345</td>
-                                <td>15C-05049</td>
-                                <td>OCUU8026949</td>
-                                <td>Đầu kéo</td>
-                                <td>Bùi Công Hạnh</td>
-                                <td>03108020257</td>
-                                <td>0395676324</td>
-                                <td>Xuất kho</td>
-                                <td>Không hút thuốc</td>
-                                <td>21/11/2024 15:54</td>
-                                <td>Cong_kho</td>
-                                <td>
-                                    <input type="checkbox"
-                                           class="form-check-input form-check-primary" checked
-                                           name="customCheck" id="customColorCheck1">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+                    else
+                    {
+                        <table class="table table-bordered">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>stt</th>
+                                    <th>số thẻ</th>
+                                    <th>b.số xe</th>
+                                    <th>số cont</th>
+                                    <th>loại xe</th>
+                                    <th>tên xe</th>
+                                    <th>cccd</th>
+                                    <th>số đt</th>
+                                    <th>mục đích</th>
+                                    <th>ghi chú</th>
+                                    <th>vào lúc</th>
+                                    <th>cho vào bởi</th>
+                                    <th>Ra lúc</th>
+                                    <th>cho Ra bởi</th>
+                                    
+                                    <th>Có HH</th>
+                                    <th>Có cont vào</th>
+                                    <th>Có cont ra</th>
+                                </tr>
+                                
+                            </thead>
+                            <tbody>
+                                @if (Model is List<MACS.Models.HistoryCar> listModel)
+                                {
+                                    int index = 1;
+                                    foreach (var item in listModel)
+                                    {
+                                        <tr>
+                                            <td>@index</td>
+                                            <td>@item.CardNo</td>
+                                            <td>@item.LicensePlate</td>
+                                            <td>@item.TypeCode</td>
+                                            <td>@item.VehicleType</td>
+                                            <td>@item.DriverName</td>
+                                            <td>@item.PersonalId</td>
+                                            <td>@item.PhoneNo</td>
+                                            <td>@item.Purpose</td>
+                                            <td>@item.Remark</td>
+                                            <td>@item.GetInDate?.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td>@item.GetInBy</td>
+                                            <td>@item.GetOutDate?.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td>@item.GetOutBy</td>
+                                            <td>
+                                                <input class="form-check-input" type="checkbox" @(item.IsCarried ? "checked" : "") disabled />
+                                            </td>
+                                            <td>
+                                                <input class="form-check-input" type="checkbox" @(item.IsCarriedIn ? "checked" : "") disabled>
+                                            </td>
+                                            <td>
+                                                <input class="form-check-input" type="checkbox" @(item.IsCarriedOut ? "checked" : "") disabled>
+                                            </td>
+                                        </tr>
+                                        index++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="12" class="text-center">Không có dữ liệu để hiển thị.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
                 </div>
             </div>
             <!-- detai tab1 End -->
@@ -254,243 +255,29 @@
                 </ul>
             </div>
         }
-    
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+            alert('@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(TempData["SuccessMessage"]?.ToString() ?? "")');
+        </script>
+        <div class="custom-alert success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+            alert('@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(TempData["ErrorMessage"]?.ToString() ?? "")');
+        </script>
+        <div class="custom-alert error">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
 
 </div>
 <!-- body End -->
-
-<!-- Form creat Start -->
-<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
-            <div class="modal-header">
-                <h5 class="modal-title" id="formModalLabel">Đăng ký vào/ra kho</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form asp-action="Create" method="post" class="needs-validation" novalidate>
-                    <div class="mb-3">
-                        <label asp-for="LicensePlate" class="form-label"></label>
-                        <input asp-for="LicensePlate" class="form-control" />
-                        <span asp-validation-for="LicensePlate" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="CardNo" class="form-label"></label>
-                        <input asp-for="CardNo" class="form-control" />
-                        <span asp-validation-for="CardNo" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="PhoneNo" class="form-label"></label>
-                        <input asp-for="PhoneNo" class="form-control" />
-                        <span asp-validation-for="PhoneNo" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="DriverName" class="form-label"></label>
-                        <input asp-for="DriverName" class="form-control" />
-                        <span asp-validation-for="DriverName" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="PersonalId" class="form-label"></label>
-                        <input asp-for="PersonalId" class="form-control" />
-                        <span asp-validation-for="PersonalId" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Purpose" class="form-label"></label>
-                        <input asp-for="Purpose" class="form-control" />
-                        <span asp-validation-for="Purpose" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="VehicleType" class="form-label"></label>
-                        <input asp-for="VehicleType" class="form-control" />
-                        <span asp-validation-for="VehicleType" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Remark" class="form-label"></label>
-                        <input asp-for="Remark" class="form-control" />
-                        <span asp-validation-for="Remark" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <input type="checkbox" asp-for="IsCarried" class="form-check-input form-check-danger form-check-glow" checked name="customCheck" id="customColorCheck4" style="background-color: #dc3545; border-color: #dc3545; box-shadow: 0 0 5px #e4606d;" />
-                        <label asp-for="IsCarried" class="form-label text-danger"></label>
-                        <span asp-validation-for="IsCarried" class="text-danger"></span>
-                    </div>
-
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Lưu lại</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Form creat End -->
-<!-- Form edit Start -->
-<div class="modal fade" id="formModal2" tabindex="-1" aria-labelledby="formModalLabel2" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
-            <div class="modal-header">
-                <h5 class="modal-title" id="formModalLabel">Đăng ký vào/ra kho</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid pt-2">
-                    <div class="bg-light rounded p-2">
-                        <p class="h6 text-center">Thông tin xe</p>
-                        <form asp-action="Edit" method="post" class="needs-validation form-control" novalidate>
-                            <div class="row">
-                                <div class="col-6 mb-3">
-                                    <label asp-for="LicensePlate" class="form-label"></label>
-                                    <input asp-for="LicensePlate" class="form-control" placeholder="Nhập biển số xe" />
-                                    <span asp-validation-for="LicensePlate" class="text-danger"></span>
-                                </div>
-                                <div class="col-6 mb-3">
-                                    <label asp-for="Purpose" class="form-label"></label>
-                                    <input asp-for="Purpose" class="form-control" placeholder="Nhập mục đích" />
-                                    <span asp-validation-for="Purpose" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 mb-3">
-                                    <label asp-for="CardNo" class="form-label"></label>
-                                    <input asp-for="CardNo" class="form-control" placeholder="Nhập số thẻ" />
-                                    <span asp-validation-for="CardNo" class="text-danger"></span>
-                                </div>
-                                <div class="col-6 mb-3">
-                                    <label asp-for="VehicleType" class="form-label"></label>
-                                    <input asp-for="VehicleType" class="form-control" placeholder="Nhập loại xe" />
-                                    <span asp-validation-for="VehicleType" class="text-danger"></span>
-                                </div>
-                                
-                            </div>
-                            <div class="row align-items-stretch">
-                                <div class="col-6 mb-3 d-flex flex-column">
-                                    <div class="mb-3">
-                                        <label asp-for="PhoneNo" class="form-label">Số ĐT</label>
-                                        <input asp-for="PhoneNo" class="form-control" placeholder="Nhập số điện thoại" />
-                                        <span asp-validation-for="PhoneNo" class="text-danger"></span>
-                                    </div>
-                                    <div class="">
-                                        <label asp-for="DriverName" class="form-label">Tên TX</label>
-                                        <input asp-for="DriverName" class="form-control" placeholder="Nhập tên tài xế" />
-                                        <span asp-validation-for="DriverName" class="text-danger"></span>
-                                    </div>
-                                </div>
-
-                                <div class="col-6 ">
-                                    <label asp-for="Remark" class="form-label">Ghi chú</label>
-                                    <textarea asp-for="Remark" class="form-control h-75" placeholder="Nhập ghi chú"></textarea>
-                                    <span asp-validation-for="Remark" class="text-danger"></span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6 mb-3">
-                                    <label asp-for="PersonalId" class="form-label"></label>
-                                    <input asp-for="PersonalId" class="form-control" placeholder="Nhập CMND/CCCD" />
-                                    <span asp-validation-for="PersonalId" class="text-danger"></span>
-                                </div>
-                                <div class="form-check col-6 mb-3 d-flex align-items-center">
-                                    <input type="checkbox" asp-for="IsCarried" class="form-check-input form-check-danger form-check-glow" checked name="customCheck" id="customColorCheck4" />
-                                    <label asp-for="IsCarried" class="form-label text-danger ms-2"></label>
-                                    <span asp-validation-for="IsCarried" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-check col-6 mb-3 d-flex align-items-center">
-                                    <input type="checkbox" asp-for="IsCarried" class="form-check-input form-check-danger form-check-glow" name="customCheck" id="hasContainerIn" />
-                                    <label class="form-label text-danger ms-2">Có kéo container vào</label>
-                                    <span asp-validation-for="IsCarried" class="text-danger"></span>
-                                </div>
-                                <div class="form-check col-6 mb-3 d-flex align-items-center">
-                                    <input type="checkbox" asp-for="IsCarried" class="form-check-input form-check-danger form-check-glow" name="customCheck" id="hasContainerOut" />
-                                    <label class="form-label text-danger ms-2">Có kéo container ra</label>
-                                    <span asp-validation-for="IsCarried" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
-                </div>
-                
-                <div class="container-fluid pt-2 d-none" id="containerIn">
-                    <div class="bg-light rounded p-2" >
-                        <p class="h6 text-center">Danh sách container vào theo xe</p>
-                        <form asp-action="Edit" method="post" class="needs-validation" novalidate>
-                            <div class="table-responsive mt-3">
-                                <table class="table table-bordered">
-                                    <thead class="table-active">
-                                        <tr>
-                                            <th>Chọn</th>
-                                            <th>Số Cont</th>
-                                            <th>Loại Cont</th>
-                                            <th>Số Seal</th>
-                                            <th>Số Seal HQ</th>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input form-check-primary"
-                                                       name="customCheck" id="customColorCheck1">
-                                            </td>
-                                            <td>OCUU8026949</td>
-                                            <td>40DC</td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="container-fluid pt-2 d-none" id="containerOut">
-                    <div class="bg-light rounded p-2">
-                        <p class="h6 text-center">Danh sách container ra theo xe</p>
-                        <form asp-action="Edit" method="post" class="needs-validation" novalidate>
-                            <div class="table-responsive mt-3">
-                                <table class="table table-bordered">
-                                    <thead class="table-active">
-                                        <tr>
-                                            <th>Chọn</th>
-                                            <th>Số Cont</th>
-                                            <th>Loại Cont</th>
-                                            <th>Số Seal</th>
-                                            <th>Số Seal HQ</th>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input form-check-primary"
-                                                       name="customCheck" id="customColorCheck1">
-                                            </td>
-                                            <td>OCUU8026949</td>
-                                            <td>40DC</td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" form="formModal2" class="btn btn-primary">Lưu lại</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-            </div>
-        </div>
-        
-    </div>
-</div>
-<!-- Form Edit End -->
-
 
 <!-- Modal QR Code -->
 <div class="modal fade" id="qrCodeModal" tabindex="-1" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
@@ -529,12 +316,14 @@
     const submitButton = document.getElementById('submitButton');
     const switchCameraButton = document.getElementById('switchCamera');
     const qrCodeButton = document.getElementById('qrCodeButton');
+    const qrCodeButton1 = document.getElementById('qrCodeButton1');
     const qrCodeModal = document.getElementById('qrCodeModal');
     const message = document.getElementById('message');
 
     let currentStream; // Lưu trữ stream hiện tại
     let isFrontCamera = false; // Mặc định là camera trước
     let qrDetected = false; // Trạng thái nhận diện QR Code
+    let lastQRCode = '';
 
 
     // Hàm khởi tạo camera
@@ -590,34 +379,36 @@
             const code = jsQR(imageData.data, imageData.width, imageData.height);
 
             if (code) {
+                lastQRCode = code.data; // Lưu mã QR đã quét
+                qrDetected = true;
                 console.log('QR Code detected:', code.data);
 
-                // Hiển thị QR code trên giao diện
-                message.innerText = `QR Code: ${code.data}`;
-                qrDetected = true;
+                // Đóng modal và chuyển hướng
+                bootstrap.Modal.getInstance(document.getElementById('qrCodeModal')).hide();
+                location.href = `/Home/Edit/${code.data}`;
 
-                // Gửi hình ảnh khi mã QR đã được xác định
-                if (qrDetected) {
-                    // Chụp ảnh từ video stream để gửi API
-                    canvas.toBlob(
-                        blob => {
-                            const file = new File([blob], 'capture.png', { type: 'image/png' });
+                // // Gửi hình ảnh khi mã QR đã được xác định
+                // if (qrDetected) {
+                //     // Chụp ảnh từ video stream để gửi API
+                //     canvas.toBlob(
+                //         blob => {
+                //             const file = new File([blob], 'capture.png', { type: 'image/png' });
 
-                            const dataTransfer = new DataTransfer();
-                            dataTransfer.items.add(file);
-                            imageInput.files = dataTransfer.files;
+                //             const dataTransfer = new DataTransfer();
+                //             dataTransfer.items.add(file);
+                //             imageInput.files = dataTransfer.files;
 
-                            // Submit form tự động
-                            submitButton.click();
-                        },
-                        'image/png',
-                        1.0 // Chất lượng cao nhất
-                    );
+                //             // Submit form tự động
+                //             submitButton.click();
+                //         },
+                //         'image/png',
+                //         1.0 // Chất lượng cao nhất
+                //     );
 
-                    // Ngừng quét sau khi phát hiện mã QR
-                    qrDetected = false;
-                    return;
-                }
+                //     // Ngừng quét sau khi phát hiện mã QR
+                //     qrDetected = false;
+                //     return;
+                // }
             } else {
                 qrDetected = false;
                 message.innerText = 'Không tìm thấy mã QR, vui lòng giữ camera ổn định...';
@@ -630,8 +421,6 @@
         scan();
     }
 
-
-
     // Sự kiện nhấn nút chuyển đổi camera
     switchCameraButton.addEventListener('click', () => {
         isFrontCamera = !isFrontCamera;
@@ -641,6 +430,9 @@
     // Sự kiện nhấn nút QRCode để khởi động camera
     qrCodeButton.addEventListener('click', () => {
         startCamera(); 
+    });
+    qrCodeButton1.addEventListener('click', () => {
+        startCamera();
     });
 
     // Tắt camera khi đóng modal

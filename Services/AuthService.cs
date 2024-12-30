@@ -6,7 +6,8 @@ namespace MACS.Services
     public class AuthService
     {
         private readonly HttpClient _httpClient;
-
+        //private const string ApiBaseUrl = "https://localhost:7279";
+        private const string ApiBaseUrl = "https://macsapi.onrender.com";
         public AuthService(HttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -20,7 +21,7 @@ namespace MACS.Services
             }
 
             // Tạo URL với query string
-            var url = $"https://macsapi.onrender.com/api/Auth/login?user={Uri.EscapeDataString(username)}&pass={Uri.EscapeDataString(password)}";
+            var url = $"{ApiBaseUrl}/api/Auth/login?user={Uri.EscapeDataString(username)}&pass={Uri.EscapeDataString(password)}";
 
             // Gửi yêu cầu GET đến API
             var response = await _httpClient.GetAsync(url);

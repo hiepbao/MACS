@@ -2,7 +2,7 @@
 using MACS.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Net.Http.Headers;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace MACS.Controllers
 {
@@ -10,18 +10,189 @@ namespace MACS.Controllers
     {
 
         private readonly QRCodeService _qrCodeService;
+        private readonly HistoryCarService _historyCarService;
 
-        public HomeController(QRCodeService qrCodeService)
+        public HomeController(QRCodeService qrCodeService, HistoryCarService historyCarService)
         {
             _qrCodeService = qrCodeService;
+            _historyCarService = historyCarService;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var model = new VehicleLog();
-            return View(model);
+            var historyCars = await _historyCarService.GetAllHistoryCarsAsync();
+
+            if (historyCars == null)
+            {
+                return View(new List<HistoryCar>());
+            }
+
+            return View(historyCars);
         }
+
+        public IActionResult Create()
+        {
+            return View(new HistoryCar
+            {
+                GetInDate = DateTime.Now, 
+                IsCarriedOut = false,
+                IsGetOut = false,
+                GetOutDate = null,
+                GetOutBy = null
+            });
+        }
+
+        // POST: Tạo mới dữ liệu
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(HistoryCar historyCar)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(historyCar); 
+            }
+
+            // Kiểm tra nếu số thẻ đã có xe vào (IsGetIn = true)
+            var existingCarResponse = await _historyCarService.CheckCardHasCarInAsync(historyCar.CardNo);
+
+            if (existingCarResponse)
+            {
+                    TempData["ErrorMessage"] = "Thẻ này đã có xe vào.";
+                    return RedirectToAction("Index");
+            }
+            
+            // Gán giá trị mặc định nếu cần
+            historyCar.GetInDate = DateTime.Now;
+            historyCar.IsCarriedOut = false;
+            historyCar.IsGetOut = false;
+            historyCar.GetOutDate = null;
+            historyCar.GetOutBy = null;
+            historyCar.ModifiedBy = null;
+            historyCar.IsGetIn = true;
+            // Lấy JWT từ cookie
+            var jwtToken = HttpContext.Request.Cookies["UserToken"];
+            if (!string.IsNullOrEmpty(jwtToken))
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var token = handler.ReadJwtToken(jwtToken);
+
+                var fullName = token.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+                if (!string.IsNullOrEmpty(fullName))
+                {
+                    historyCar.GetInBy = fullName;
+                    historyCar.CreatedBy = fullName;
+                    historyCar.ModifiedBy = fullName;
+                }
+                else
+                {
+                    historyCar.GetInBy = "Unknown User"; 
+                }
+            }
+            else
+            {
+                historyCar.GetInBy = "Unknown User";
+            }
+
+
+            var response = await _historyCarService.CreateHistoryCarAsync(historyCar);
+
+            if (response)
+            {
+                TempData["SuccessMessage"] = "Cho vào thành công!";
+                return RedirectToAction("Index"); 
+            }
+
+            ModelState.AddModelError("", "Không thể tạo mới dữ liệu. Vui lòng thử lại.");
+            return View(historyCar);
+        }
+
+        // GET: Hiển thị form chỉnh sửa
+        [HttpGet]
+        public async Task<IActionResult> Edit(string cardNo)
+        {
+            if (string.IsNullOrWhiteSpace(cardNo))
+            {
+                TempData["ErrorMessage"] = "Mã thẻ không được để trống.";
+                return RedirectToAction("Index");
+            }
+
+            var historyCar = await _historyCarService.GetHistoryCarByCardNoAsync(cardNo);
+            if (historyCar == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy dữ liệu thẻ xe hoặc xe đã ra khỏi bãi.";
+                return RedirectToAction("Index");
+            }
+
+            return View(historyCar);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string cardNo, HistoryCar historyCar)
+        {
+            if (cardNo != historyCar.CardNo)
+            {
+                return BadRequest("CardNo không khớp.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(historyCar);
+            }
+            // Lấy dữ liệu cũ từ API
+            var oldHistoryCar = await _historyCarService.GetHistoryCarByCardNoAsync(cardNo);
+            if (oldHistoryCar == null || oldHistoryCar.IsGetOut)
+            {
+                TempData["ErrorMessage"] = "Không có bản ghi nào phù hợp để chỉnh sửa (đã ra khỏi bãi).";
+                return RedirectToAction("Index");
+            }
+
+            // Cập nhật ngày chỉnh sửa (ModifiedDate)
+            historyCar.ModifiedDate = DateTime.UtcNow;
+            historyCar.GetOutDate = DateTime.Now;
+            historyCar.IsCarried = oldHistoryCar.IsCarried;
+            historyCar.IsCarriedIn = oldHistoryCar.IsCarriedIn;
+            historyCar.IsGetIn = oldHistoryCar.IsGetIn;
+            historyCar.IsGetOut = true;
+            // Lấy JWT từ cookie
+            var jwtToken = HttpContext.Request.Cookies["UserToken"];
+            if (!string.IsNullOrEmpty(jwtToken))
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var token = handler.ReadJwtToken(jwtToken);
+
+                var fullName = token.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+                if (!string.IsNullOrEmpty(fullName))
+                {
+                    historyCar.GetOutBy = fullName;
+                    historyCar.ModifiedBy = fullName;
+                }
+                else
+                {
+                    historyCar.GetInBy = "Unknown User"; 
+                }
+            }
+            else
+            {
+                historyCar.GetInBy = "Unknown User";
+            }
+            
+            var response = await _historyCarService.UpdateHistoryCarAsync(cardNo, historyCar);
+
+            if (response)
+            {
+                TempData["SuccessMessage"] = "Cho ra thành công!";
+                return RedirectToAction("Index"); 
+            }
+
+            ModelState.AddModelError("", "Không thể cập nhật dữ liệu. Vui lòng thử lại.");
+            return View(historyCar);
+        }
+
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> ScanQR(IFormFile qrImage)
@@ -81,70 +252,6 @@ namespace MACS.Controllers
                 ViewBag.Message = "Đã xảy ra lỗi trong quá trình quét QR: " + ex.Message;
                 return View("Index");
             }
-
-
-        }
-
-
-        [HttpGet]
-        public IActionResult WareHouse()
-        {
-            if (TempData["Result"] != null)
-            {
-                var jsonString = TempData["Result"] as string;
-                if (!string.IsNullOrEmpty(jsonString))
-                {
-                    try
-                    {
-                        // Deserialize JSON thành QrCodeResponse
-                        var resultObject = Newtonsoft.Json.JsonConvert.DeserializeObject<QrCodeResponse>(jsonString);
-                        return View(resultObject); // Truyền đúng model vào view
-                    }
-                    catch (Exception ex)
-                    {
-                        // Log lỗi nếu cần
-                        TempData["Error"] = "Lỗi khi xử lý JSON: " + ex.Message;
-                    }
-                }
-            }
-
-            // Truyền một model mặc định nếu không có dữ liệu
-            return View(new QrCodeResponse());
-        }
-
-        [HttpGet]
-        public IActionResult CheckOut()
-        {
-            if (TempData["Result"] != null)
-            {
-                var jsonString = TempData["Result"] as string;
-                if (!string.IsNullOrEmpty(jsonString))
-                {
-                    try
-                    {
-                        // Deserialize JSON thành QrCodeResponse
-                        var resultObject = Newtonsoft.Json.JsonConvert.DeserializeObject<QrCodeResponse>(jsonString);
-                        return View(resultObject); // Truyền đúng model vào view
-                    }
-                    catch (Exception ex)
-                    {
-                        // Log lỗi nếu cần
-                        TempData["Error"] = "Lỗi khi xử lý JSON: " + ex.Message;
-                    }
-                }
-            }
-
-            // Truyền một model mặc định nếu không có dữ liệu
-            return View(new QrCodeResponse());
-        }
-
-
-
-
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

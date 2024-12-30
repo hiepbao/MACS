@@ -6,7 +6,8 @@ namespace MACS.Services
     public class UploadHistoryService
     {
         private readonly HttpClient _httpClient;
-
+        //private const string ApiBaseUrl = "https://localhost:7279";
+        private const string ApiBaseUrl = "https://macsapi.onrender.com";
         public UploadHistoryService(HttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -14,7 +15,7 @@ namespace MACS.Services
 
         public async Task<List<UploadHistoryRecord>> GetUploadHistoryAsync()
         {
-            var apiUrl = "https://macsapi.onrender.com/api/File/readUploadHistory"; // Đường dẫn API
+            var apiUrl = $"{ApiBaseUrl}/api/File/readUploadHistory"; // Đường dẫn API
 
             // Gọi API và nhận dữ liệu JSON
             var result = await _httpClient.GetFromJsonAsync<List<UploadHistoryRecord>>(apiUrl);
@@ -25,7 +26,7 @@ namespace MACS.Services
         // Phương thức upload file
         public async Task<string> UploadFileAsync(IFormFile file, string token)
         {
-            var apiUrl = "https://macsapi.onrender.com/api/File/uploadZip";
+            var apiUrl = $"{ApiBaseUrl}/api/File/uploadZip";
 
             using (var content = new MultipartFormDataContent())
             {

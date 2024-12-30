@@ -7,15 +7,54 @@ namespace MACS.Services
     public class QRCodeService
     {
         private readonly HttpClient _httpClient;
-
+        //private const string ApiBaseUrl = "https://localhost:7279";
+        private const string ApiBaseUrl = "https://macsapi.onrender.com";
         public QRCodeService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
+        public async Task<List<HistoryCar>> GetHistoryCarsAsync()
+        {
+            var apiUrl = $"{ApiBaseUrl}/api/HistoryCar";
+            List<HistoryCar> historyCars = new List<HistoryCar>();
+
+            var response = await _httpClient.GetAsync(apiUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                historyCars = await response.Content.ReadFromJsonAsync<List<HistoryCar>>();
+            }
+            else
+            {
+                // Bạn có thể xử lý lỗi hoặc ghi log nếu cần
+                throw new HttpRequestException($"Failed to fetch data from API. Status code: {response.StatusCode}");
+            }
+
+            return historyCars;
+        }
+        public async Task<bool> CreateHistoryCarAsync(HistoryCar model)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync($"{ApiBaseUrl}/api/HistoryCar", model);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true; // Thành công
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log lỗi nếu cần
+                Console.WriteLine($"Lỗi khi gọi API: {ex.Message}");
+            }
+
+            return false; // Thất bại
+        }
         public async Task<QrCodeResponse> ScanQRCodeAsync(IFormFile qrImage)
         {
-            var apiUrl = "https://macsapi.onrender.com/api/QRCode/ScanQR";
+            var apiUrl = $"{ApiBaseUrl}/api/QRCode/ScanQR";
 
             using (var content = new MultipartFormDataContent())
             {
