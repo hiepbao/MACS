@@ -39,7 +39,7 @@ namespace MACS.Controllers
         {
             return View(new HistoryCar
             {
-                GetInDate = DateTime.Now, 
+                GetInDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time")), 
                 IsCarriedOut = false,
                 IsGetOut = false,
                 GetOutDate = null,
@@ -67,7 +67,7 @@ namespace MACS.Controllers
             }
             
             // Gán giá trị mặc định nếu cần
-            historyCar.GetInDate = DateTime.Now;
+            historyCar.GetInDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
             historyCar.IsCarriedOut = false;
             historyCar.IsGetOut = false;
             historyCar.GetOutDate = null;
@@ -153,8 +153,8 @@ namespace MACS.Controllers
             }
 
             // Cập nhật ngày chỉnh sửa (ModifiedDate)
-            historyCar.ModifiedDate = DateTime.UtcNow;
-            historyCar.GetOutDate = DateTime.Now;
+            historyCar.ModifiedDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
+            historyCar.GetOutDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
             historyCar.IsCarried = oldHistoryCar.IsCarried;
             historyCar.IsCarriedIn = oldHistoryCar.IsCarriedIn;
             historyCar.IsGetIn = oldHistoryCar.IsGetIn;
