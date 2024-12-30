@@ -224,8 +224,7 @@
                 console.log('QR Code detected:', code.data);
                 cardNoInput.value = code.data;
 
-                const modalInstance = new bootstrap.Modal(qrCodeModal);
-                modalInstance.hide();
+                bootstrap.Modal.getInstance(document.getElementById('qrCodeModal')).hide();
                 stopCamera();
             } else {
                 message.innerText = 'Không tìm thấy mã QR, vui lòng giữ camera ổn định...';
