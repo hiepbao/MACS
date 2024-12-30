@@ -1,97 +1,4 @@
-﻿@* @model MACS.Models.HistoryCar
-
-@{
-    ViewData["Title"] = "Tạo mới Lịch sử xe";
-}
-
-<h1>@ViewData["Title"]</h1>
-
-<form asp-action="Create" method="post">
-    <div class="form-group">
-        <label asp-for="CardNo" class="control-label"></label>
-        <input asp-for="CardNo" class="form-control" />
-        <span asp-validation-for="CardNo" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="DriverName" class="control-label"></label>
-        <input asp-for="DriverName" class="form-control" />
-        <span asp-validation-for="DriverName" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="PersonalId" class="control-label"></label>
-        <input asp-for="PersonalId" class="form-control" />
-        <span asp-validation-for="PersonalId" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="PhoneNo" class="control-label"></label>
-        <input asp-for="PhoneNo" class="form-control" />
-        <span asp-validation-for="PhoneNo" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="LicensePlate" class="control-label"></label>
-        <input asp-for="LicensePlate" class="form-control" />
-        <span asp-validation-for="LicensePlate" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="VehicleType" class="control-label"></label>
-        <input asp-for="VehicleType" class="form-control" />
-        <span asp-validation-for="VehicleType" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="TypeCode" class="control-label"></label>
-        <input asp-for="TypeCode" class="form-control" />
-        <span asp-validation-for="TypeCode" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Purpose" class="control-label"></label>
-        <input asp-for="Purpose" class="form-control" />
-        <span asp-validation-for="Purpose" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Remark" class="control-label"></label>
-        <textarea asp-for="Remark" class="form-control"></textarea>
-        <span asp-validation-for="Remark" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="IsCarried" class="control-label"></label>
-        <input asp-for="IsCarried" type="checkbox" class="form-check-input" />
-        <span asp-validation-for="IsCarried" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="IsCarriedIn" class="control-label"></label>
-        <input asp-for="IsCarriedIn" type="checkbox" class="form-check-input" />
-        <span asp-validation-for="IsCarriedIn" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="IsGetIn" class="control-label"></label>
-        <input asp-for="IsGetIn" type="checkbox" class="form-check-input" />
-        <span asp-validation-for="IsGetIn" class="text-danger"></span>
-    </div>
-
-
-    <button type="submit" class="btn btn-primary">Tạo mới</button>
-</form>
-@if (!ViewData.ModelState.IsValid)
-{
-    <div class="alert alert-danger">
-        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-        {
-            <p>@error.ErrorMessage</p>
-        }
-    </div>
-}
- *@
+﻿
 
 @model MACS.Models.HistoryCar
 
@@ -262,8 +169,8 @@
             const constraints = {
                 video: {
                     facingMode: isFrontCamera ? 'user' : 'environment',
-                    width: { ideal: 1920 },
-                    height: { ideal: 1080 },
+                    // width: { ideal: 1920 },
+                    // height: { ideal: 1080 },
                     frameRate: { ideal: 60 },
                 },
             };
@@ -317,8 +224,8 @@
                 console.log('QR Code detected:', code.data);
                 cardNoInput.value = code.data;
 
-                scanning = false;
-                bootstrap.Modal.getInstance(qrCodeModal).hide();
+                const modalInstance = new bootstrap.Modal(qrCodeModal);
+                modalInstance.hide();
                 stopCamera();
             } else {
                 message.innerText = 'Không tìm thấy mã QR, vui lòng giữ camera ổn định...';
