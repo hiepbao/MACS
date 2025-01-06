@@ -1,0 +1,70 @@
+﻿@model List<UploadHistoryRecord>
+
+@{
+    ViewData["Title"] = "Upload History";
+}
+
+
+<!-- body Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light rounded h-100 p-4">
+        <h2 class=" text-center">Lịch sử Upload</h2>
+
+        <div class="tab-content pt-3" id="nav-tabContent">
+            <!-- detai tab1 Start -->
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Người dùng</th>
+                                <th>Tên file</th>
+                                <th>Dung lượng KB</th>
+                                <th>Số file</th>
+                                <th>Thời gian</th>
+                                <th>Danh sách file</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var record in Model)
+                            {
+                                <tr>
+                                    <td>@record.FullName</td>
+                                    <td>@record.FileName</td>
+                                    <td>@record.FileSizeKB</td>
+                                    <td>@record.FileCount</td>
+                                    <td>@record.UploadTime</td>
+                                    <td>
+                                        <ul>
+                                            @foreach (var file in record.FileList)
+                                            {
+                                                <li>@file</li>
+                                            }
+                                        </ul>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- detai tab1 End -->
+        </div>
+    </div>
+    <!-- Kết quả tải lên -->
+    @if (ViewBag.Results != null)
+    {
+        <div class="custom-alert">
+            <h6>Kết quả:</h6>
+            <ul>
+                @foreach (var result in (List<string>)ViewBag.Results)
+                {
+                    <li>@result</li>
+                }
+            </ul>
+        </div>
+    }
+
+
+</div>
+<!-- body End -->

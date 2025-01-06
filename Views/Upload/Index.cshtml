@@ -1,0 +1,190 @@
+﻿@model List<UploadHistoryRecord>
+
+@{
+    ViewData["Title"] = "Thêm file";
+}
+
+<style>
+    .custom-alert {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #f8d7da;
+        color: #842029;
+        border: 1px solid #f5c2c7;
+        border-radius: 8px;
+        padding: 15px 20px;
+        font-size: 14px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1050;
+        animation: fadeOut 5s forwards;
+    }
+
+    @@keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+</style>
+
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light rounded p-4">
+        <p class="h2 text-center">Upload file</p>
+        
+
+        <div class="mb-3">
+            <form asp-controller="Upload" asp-action="Index" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="zipFiles" class="form-label text-danger">Chọn các file .zip</label>
+                    <input class="form-control" type="file" id="zipFiles" name="zipFiles" accept=".zip" multiple required>
+                </div>
+                <table class="table table-bordered mt-3 " id="fileTable">
+                    <thead class="table-primary ">
+                        <tr>
+                            <th>Tên file</th>
+                            <th>Dung lượng (KB)</th>
+                            <th>Nội dung file</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fileTableBody">
+                    </tbody>
+                </table>
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary" id="uploadBtn" disabled>Tải lên</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.Results != null)
+{
+    <div class="custom-alert">
+        <h6>Kết quả:</h6>
+        <ul>
+            @foreach (var result in (List<string>)ViewBag.Results)
+            {
+                <li>@result</li>
+            }
+        </ul>
+    </div>
+}
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fileInput = document.getElementById('zipFiles');
+        const fileTableBody = document.getElementById('fileTableBody');
+        const uploadBtn = document.getElementById('uploadBtn');
+
+        let files = [];
+
+        // Khi người dùng chọn file
+        fileInput.addEventListener('change', (event) => {
+            const newFiles = Array.from(event.target.files);
+            // Loại bỏ file trùng lặp
+            const uniqueFiles = newFiles.filter((newFile) => {
+                return !files.some((existingFile) => existingFile.name === newFile.name && existingFile.size === newFile.size);
+            });
+
+            files = files.concat(uniqueFiles);
+            renderFileTable();
+        });
+
+        // Cập nhật giá trị input file mỗi khi danh sách file thay đổi
+        const updateFileInput = () => {
+            const dataTransfer = new DataTransfer();
+            files.forEach((file) => dataTransfer.items.add(file));
+            fileInput.files = dataTransfer.files;
+        };
+
+        // Hiển thị bảng danh sách file
+        const renderFileTable = async () => {
+            fileTableBody.innerHTML = '';
+            if (files.length === 0) {
+                uploadBtn.disabled = true;
+                return;
+            }
+            uploadBtn.disabled = false;
+
+            for (let index = 0; index < files.length; index++) {
+                const file = files[index];
+                const row = document.createElement('tr');
+
+                const fileNameCell = document.createElement('td');
+                fileNameCell.textContent = file.name;
+                row.appendChild(fileNameCell);
+
+                const fileSizeCell = document.createElement('td');
+                fileSizeCell.textContent = (file.size / 1024).toFixed(2); // KB
+                row.appendChild(fileSizeCell);
+
+                const fileContentCell = document.createElement('td');
+                if (file.name.endsWith('.zip')) {
+                    const contentList = await getZipContent(file);
+                    fileContentCell.appendChild(contentList);
+                } else {
+                    fileContentCell.textContent = 'Không hỗ trợ đọc nội dung';
+                }
+                row.appendChild(fileContentCell);
+
+                const actionCell = document.createElement('td');
+
+                actionCell.className = 'd-flex justify-content-center align-items-center';
+
+                const removeButton = document.createElement('button');
+                removeButton.className = 'btn btn-link p-0 text-danger'; 
+                removeButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+
+                removeButton.addEventListener('click', () => {
+                    files.splice(index, 1); 
+                    renderFileTable();
+                    updateFileInput();
+                });
+
+                actionCell.appendChild(removeButton);
+                row.appendChild(actionCell);
+
+
+
+                fileTableBody.appendChild(row);
+            }
+
+            updateFileInput();
+        };
+
+        // Đọc nội dung file zip
+        const getZipContent = async (file) => {
+            const reader = new FileReader();
+
+            return new Promise((resolve) => {
+                reader.onload = async (event) => {
+                    const jszip = new JSZip();
+                    const zip = await jszip.loadAsync(event.target.result);
+
+                    const ul = document.createElement('ul');
+                    for (const filename of Object.keys(zip.files)) {
+                        const li = document.createElement('li');
+                        li.textContent = filename;
+                        ul.appendChild(li);
+                    }
+                    resolve(ul);
+                };
+                reader.onerror = (error) => {
+                    console.error('Error reading file:', error);
+                    resolve(document.createTextNode('Không thể đọc nội dung file zip.'));
+                };
+                reader.readAsArrayBuffer(file);
+            });
+        };
+    });
+</script>
+
+

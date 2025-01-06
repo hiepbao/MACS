@@ -1,0 +1,465 @@
+﻿@using MACS.Models;
+@* @model IEnumerable<MACS.Models.VehicleLog>; *@
+@model dynamic;
+@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+    .custom-alert {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        min-width: 300px;
+        padding: 15px 20px;
+        font-size: 14px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1050;
+        opacity: 0; /* Ẩn ban đầu */
+        transform: translateY(20px); /* Đẩy xuống một chút */
+        animation: fadeIn 0.5s forwards, fadeOut 5s forwards 4.5s; /* Fade in và fade out */
+    }
+
+    /* Màu sắc cho từng loại thông báo */
+    .custom-alert.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .custom-alert.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    .custom-alert.info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+    }
+
+    .custom-alert.warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+    }
+
+    /* Hiệu ứng fade-in */
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Hiệu ứng fade-out */
+    @@keyframes fadeOut {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+    }
+
+</style>
+
+<!-- header Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light rounded p-4">
+        <p class="h2 text-center">Danh sách xe chờ theo dõi</p>
+        <div class="col-md-6 mb-4">
+            <fieldset class="form-group">
+                <select class="form-select" id="basicSelect" aria-label>
+                    <option value="Ra vào kho">Ra vào kho</option>
+                    <option value="Kho ra vào">Kho ra vào</option>
+                    <option value="Vào ra kho">Vào ra kho</option>
+                </select>
+            </fieldset>
+        </div>
+        <div class="">
+            
+            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" id="qrCodeButton" data-bs-target="#qrCodeModal">
+                <i class="fas fa-qrcode me-2"></i>QRCode
+            </button>
+        </div>
+    </div>
+
+</div>
+<!-- header End -->
+
+<!-- body Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light rounded h-100 p-4">
+        <h6 class="mb-2">Thông tin</h6>
+        <div class="mb-2">
+            <button type="button" class="btn btn-primary m-2" onclick="location.href='/Home/Create'">Đăng ký vào</button>
+
+            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" id="qrCodeButton1" data-bs-target="#qrCodeModal">
+                <i class="fas fa-qrcode me-2"></i>Đăng ký ra
+            </button>
+        </div>
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+                        aria-selected="true">
+                    Lịch sử ra vào
+                </button>
+                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-profile" type="button" role="tab"
+                        aria-controls="nav-profile" aria-selected="false">
+                    Xe chờ ra
+                </button>
+            </div>
+        </nav>
+
+        
+        <div class="tab-content pt-3" id="nav-tabContent">
+            <!-- detai tab1 Start -->
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                
+
+                <div class="table-responsive mt-3">
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+                    else
+                    {
+                        <table class="table table-bordered">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Số thẻ</th>
+                                    <th>B.số xe</th>
+                                    <th>Số cont</th>
+                                    <th>Loại xe</th>
+                                    <th>Tên xe</th>
+                                    <th>CCCD</th>
+                                    <th>Số đt</th>
+                                    <th>Mục đích</th>
+                                    <th>Ghi chú</th>
+                                    <th>Vào lúc</th>
+                                    <th>Cho vào bởi</th>
+                                    <th>Ra lúc</th>
+                                    <th>Cho ra bởi</th>
+                                    <th>Có HH</th>
+                                    <th>Có cont vào</th>
+                                    <th>Có cont ra</th>
+                                </tr>
+                                
+                            </thead>
+                            <tbody>
+                                @if (Model is List<MACS.Models.HistoryCar> listModel)
+                                {
+                                    int index = 1;
+                                    foreach (var item in listModel)
+                                    {
+                                        <tr>
+                                            <td>@index</td>
+                                            <td>@item.CardNo</td>
+                                            <td>@item.LicensePlate</td>
+                                            <td>@item.TypeCode</td>
+                                            <td>@item.VehicleType</td>
+                                            <td>@item.DriverName</td>
+                                            <td>@item.PersonalId</td>
+                                            <td>@item.PhoneNo</td>
+                                            <td>@item.Purpose</td>
+                                            <td>@item.Remark</td>
+                                            <td>@item.GetInDate?.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td>@item.GetInBy</td>
+                                            <td>@item.GetOutDate?.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td>@item.GetOutBy</td>
+                                            <td>
+                                                <input class="form-check-input" type="checkbox" @(item.IsCarried ? "checked" : "") disabled />
+                                            </td>
+                                            <td>
+                                                <input class="form-check-input" type="checkbox" @(item.IsCarriedIn ? "checked" : "") disabled>
+                                            </td>
+                                            <td>
+                                                <input class="form-check-input" type="checkbox" @(item.IsCarriedOut ? "checked" : "") disabled>
+                                            </td>
+                                        </tr>
+                                        index++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="12" class="text-center">Không có dữ liệu để hiển thị.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+            <!-- detai tab1 End -->
+
+            <!-- detai tab2 Start -->
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div class="table-responsive mt-3">
+                    @if (ViewBag.WaitingCars is List<MACS.Models.HistoryCar> waitingCars)
+                    {
+                        <table class="table table-bordered">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Số thẻ</th>
+                                    <th>Biển số xe</th>
+                                    <th>Số cont</th>
+                                    <th>Loại xe</th>
+                                    <th>Tên xe</th>
+                                    <th>CCCD</th>
+                                    <th>Số ĐT</th>
+                                    <th>Mục đích</th>
+                                    <th>Ghi chú</th>
+                                    <th>Vào lúc</th>
+                                    <th>Cho vào bởi</th>
+                                    <th>Có HH</th>
+                                    <th>Có cont vào</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (waitingCars.Any())
+                                {
+                                    int index = 1;
+                                    foreach (var car in waitingCars)
+                                    {
+                                        <tr>
+                                            <td>@index</td>
+                                            <td>@car.CardNo</td>
+                                            <td>@car.LicensePlate</td>
+                                            <td>@car.TypeCode</td>
+                                            <td>@car.VehicleType</td>
+                                            <td>@car.DriverName</td>
+                                            <td>@car.PersonalId</td>
+                                            <td>@car.PhoneNo</td>
+                                            <td>@car.Purpose</td>
+                                            <td>@car.Remark</td>
+                                            <td>@car.GetInDate?.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td>@car.GetInBy</td>
+                                            <td>
+                                                <input class="form-check-input" type="checkbox" @(car.IsCarried ? "checked" : "") disabled />
+                                            </td>
+                                            <td>
+                                                <input class="form-check-input" type="checkbox" @(car.IsCarriedIn ? "checked" : "") disabled>
+                                            </td>
+                                        </tr>
+                                        index++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="12" class="text-center">Không có xe trong bãi.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            Không thể tải dữ liệu container chờ ra.
+                        </div>
+                    }
+                </div>
+            </div>
+            <!-- detai tab2 end -->
+        </div>
+    </div>
+        <!-- Kết quả tải lên -->
+        @if (ViewBag.Results != null)
+        {
+            <div class="custom-alert">
+                <h6>Kết quả:</h6>
+                <ul>
+                    @foreach (var result in (List<string>)ViewBag.Results)
+                    {
+                        <li>@result</li>
+                    }
+                </ul>
+            </div>
+        }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+            alert('@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(TempData["SuccessMessage"]?.ToString() ?? "")');
+        </script>
+        <div class="custom-alert success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+            alert('@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(TempData["ErrorMessage"]?.ToString() ?? "")');
+        </script>
+        <div class="custom-alert error">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+
+</div>
+<!-- body End -->
+
+<!-- Modal QR Code -->
+<div class="modal fade" id="qrCodeModal" tabindex="-1" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="qrCodeModalLabel">Quét QR Code</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <video id="camera" autoplay playsinline muted class="w-100 h-auto border border-secondary rounded"></video>
+                    <canvas id="canvas" style="display: none;"></canvas> 
+                    <p id="message" class="text-danger mt-3"></p>
+                </div>
+
+                @* <form id="uploadForm" method="post" enctype="multipart/form-data" asp-action="ScanQR">
+                    <input type="file" id="imageInput" name="qrImage" style="display: none;"> 
+                    <button type="submit" style="display: none;" id="submitButton">Upload</button> 
+                </form> *@
+            </div>
+
+            <div class="modal-footer">
+                <button id="switchCamera" class="btn btn-primary mt-3">Đổi Camera</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal QR Code -->
+
+<script>
+    //xử lý video
+    let currentStream = null;
+    let isFrontCamera = false;
+    let scanning = false;
+    let qrDetected = false;
+
+    const video = document.getElementById('camera');
+    const canvas = document.getElementById('canvas');
+    const switchCameraButton = document.getElementById('switchCamera');
+    const qrCodeButton = document.getElementById('qrCodeButton');
+    const qrCodeButton1 = document.getElementById('qrCodeButton1');
+    const qrCodeModal = document.getElementById('qrCodeModal');
+    const message = document.getElementById('message');
+    const cardNoInput = document.getElementById('cardNoInput');
+
+    // Hàm khởi động camera
+    async function startCamera() {
+        try {
+            if (currentStream) {
+                currentStream.getTracks().forEach((track) => track.stop());
+            }
+
+            const constraints = {
+                video: {
+                    facingMode: isFrontCamera ? 'user' : 'environment',
+                    width: { ideal: 1920 },
+                    height: { ideal: 1080 },
+                    frameRate: { ideal: 60 },
+                },
+            };
+
+            currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+            video.srcObject = currentStream;
+
+            video.addEventListener('loadedmetadata', () => {
+                video.play();
+                if (!scanning) {
+                    scanning = true;
+                    scanQRCode();
+                }
+            });
+        } catch (err) {
+            console.error('Error accessing camera:', err);
+            message.innerText = 'Không thể truy cập camera. Vui lòng kiểm tra quyền truy cập.';
+        }
+    }
+
+    // Hàm dừng camera
+    function stopCamera() {
+        scanning = false;
+        if (currentStream) {
+            currentStream.getTracks().forEach((track) => track.stop());
+            currentStream = null;
+        }
+    }
+
+    // Hàm quét QR Code
+    function scanQRCode() {
+        const context = canvas.getContext('2d', { willReadFrequently: true });
+
+        const scan = () => {
+            if (!scanning) return;
+
+            if (video.videoWidth === 0 || video.videoHeight === 0) {
+                requestAnimationFrame(scan);
+                return;
+            }
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+            if (code) {
+                qrDetected = true;
+                lastQRCode = code.data; // Lưu mã QR đã quét
+
+                console.log('QR Code detected:', code.data);
+
+                // Đóng modal và chuyển hướng
+                bootstrap.Modal.getInstance(document.getElementById('qrCodeModal')).hide();
+                location.href = `/Home/Edit/${code.data}`;
+            } else {
+                message.innerText = 'Không tìm thấy mã QR, vui lòng giữ camera ổn định...';
+            }
+
+            if (scanning) {
+                requestAnimationFrame(scan);
+            }
+        };
+
+        scan();
+    }
+
+    // Sự kiện chuyển đổi camera
+    switchCameraButton.addEventListener('click', () => {
+        isFrontCamera = !isFrontCamera;
+        stopCamera();
+        startCamera();
+    });
+
+    // Sự kiện mở modal để bắt đầu camera
+    qrCodeButton.addEventListener('click', () => {
+        startCamera();
+    });
+    qrCodeButton1.addEventListener('click', () => {
+        startCamera();
+    });
+
+    // Sự kiện đóng modal để dừng camera
+    qrCodeModal.addEventListener('hidden.bs.modal', () => {
+        stopCamera();
+    });
+</script>
+

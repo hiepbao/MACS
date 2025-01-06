@@ -1,0 +1,170 @@
+﻿
+ @model MACS.Models.HistoryCar
+
+@{
+    ViewData["Title"] = "Cho xe ra";
+}
+
+<div class="">
+    <div class="bg-light rounded h-100 p-4">
+        <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h5 class="modal-title text-center mx-auto" id="formModalLabel">Đăng ký ra </h5>
+            </div>
+            <div class="modal-body">
+                <div class="pt-1">
+                    <div class="bg-light rounded p-2">
+                        <p class="h6 text-center">Thông tin xe</p>
+                        <form asp-action="Edit" id="formEdit" method="post" class="needs-validation form-control" novalidate>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label asp-for="LicensePlate" class="control-label"></label>
+                                    <input asp-for="LicensePlate" class="form-control" readonly />
+                                    <span asp-validation-for="LicensePlate" class="text-danger"></span>
+                                </div>
+                                <div class="col-6 mb-3">
+                                        <label asp-for="Purpose" class="control-label"></label>
+                                        <input asp-for="Purpose" class="form-control" readonly />
+                                        <span asp-validation-for="Purpose" class="text-danger"></span>
+                                    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                        <label asp-for="CardNo" class="control-label"></label>
+                                        <input asp-for="CardNo" class="form-control" readonly />
+                                        <span asp-validation-for="CardNo" class="text-danger"></span>
+                                   
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label asp-for="VehicleType" class="control-label"></label>
+                                    <input asp-for="VehicleType" class="form-control" readonly />
+                                    <span asp-validation-for="VehicleType" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                            <div class="row align-items-stretch">
+                                <div class="col-6 mb-3 d-flex flex-column">
+                                    <div class="mb-3">
+                                        <label asp-for="PhoneNo" class="control-label"></label>
+                                        <input asp-for="PhoneNo" class="form-control" readonly />
+                                        <span asp-validation-for="PhoneNo" class="text-danger"></span>
+                                    </div>
+                                    <div class="">
+                                        <label asp-for="DriverName" class="control-label"></label>
+                                        <input asp-for="DriverName" class="form-control" readonly />
+                                        <span asp-validation-for="DriverName" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 ">
+                                    <label asp-for="Remark" class="control-label"></label>
+                                    <textarea asp-for="Remark" class="form-control h-75" readonly></textarea>
+                                    <span asp-validation-for="Remark" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label asp-for="PersonalId" class="control-label"></label>
+                                    <input asp-for="PersonalId" class="form-control" readonly />
+                                    <span asp-validation-for="PersonalId" class="text-danger"></span>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label asp-for="TypeCode" class="control-label"></label>
+                                    <input asp-for="TypeCode" class="form-control" readonly />
+                                    <span asp-validation-for="TypeCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label asp-for="GetInBy" class="control-label"></label>
+                                    <input asp-for="GetInBy" class="form-control" readonly />
+                                    <span asp-validation-for="GetInBy" class="text-danger"></span>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label asp-for="GetInDate" class="control-label"></label>
+                                    <input asp-for="GetInDate" class="form-control" type="datetime-local" value="@Model.GetInDate?.ToString("yyyy-MM-ddTHH:mm")" readonly />
+                                    <span asp-validation-for="GetInDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label asp-for="GetOutBy" class="control-label"></label>
+                                    <input asp-for="GetOutBy" class="form-control" readonly />
+                                    <span asp-validation-for="GetOutBy" class="text-danger"></span>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label asp-for="GetOutDate" class="control-label"></label>
+                                    <input asp-for="GetOutDate" class="form-control" type="datetime-local" value="@Model.GetOutDate?.ToString("yyyy-MM-ddTHH:mm")" readonly />
+                                    <span asp-validation-for="GetOutDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label asp-for="IsCarriedOut" class="control-label text-danger"></label>
+                                    <input asp-for="IsCarriedOut" type="checkbox" class="form-check-input" />
+                                    <span asp-validation-for="IsCarriedOut" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div> 
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="history.back()">Quay lại</button>
+                    @if (!Model.IsGetOut) // Kiểm tra nếu IsGetOut là false
+                    {
+                        <button type="submit" form="formEdit" class="btn btn-primary">Cho ra</button>
+                    }
+                    else
+                    {
+                        <button type="submit" form="formEdit" class="btn btn-primary" disabled>Đã ra</button>
+                    }
+
+            </div>
+        </div>
+
+    </div>
+    <!-- Kết quả tải lên -->
+    @if (ViewBag.Results != null)
+    {
+        <div class="custom-alert">
+            <h6>Kết quả:</h6>
+            <ul>
+                @foreach (var result in (List<string>)ViewBag.Results)
+                {
+                    <li>@result</li>
+                }
+            </ul>
+        </div>
+    }
+</div>
+
+<script>
+    // Xử lý hiển thị container
+    document.addEventListener("DOMContentLoaded", function () {
+        const containerIn = document.getElementById("containerIn");
+        const containerOut = document.getElementById("containerOut");
+        const hasContainerIn = document.getElementById("hasContainerIn");
+        const hasContainerOut = document.getElementById("hasContainerOut");
+
+        function toggleContainerTable() {
+            if (hasContainerIn.checked) {
+                containerIn.classList.remove("d-none");
+            } else {
+                containerIn.classList.add("d-none");
+            }
+        }
+        function toggleContainerTable2() {
+            if (hasContainerOut.checked) {
+                containerOut.classList.remove("d-none");
+            } else {
+                containerOut.classList.add("d-none");
+            }
+        }
+
+        hasContainerIn.addEventListener("change", toggleContainerTable);
+        hasContainerOut.addEventListener("change", toggleContainerTable2);
+    });
+</script>

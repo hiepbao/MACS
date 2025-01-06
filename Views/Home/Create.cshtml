@@ -1,0 +1,258 @@
+﻿
+
+@model MACS.Models.HistoryCar
+
+@{
+    ViewData["Title"] = "Cho xe vào";
+}
+
+<div class="">
+    <div class="bg-light rounded h-100 p-4">
+        <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h5 class="modal-title text-center mx-auto" id="formModalLabel">Đăng ký vào </h5>
+            </div>
+            <div class="modal-body">
+                <div class=" pt-1">
+                    <div class="bg-light rounded p-2">
+                        <p class="h6 text-center">Thông tin xe</p>
+                        <form asp-action="Create" id="formCreate" method="post" class="needs-validation form-control" novalidate>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label asp-for="LicensePlate" class="control-label"></label>
+                                    <input asp-for="LicensePlate" class="form-control"  />
+                                    <span asp-validation-for="LicensePlate" class="text-danger"></span>
+                                </div>
+                                <div class="col-6 mb-3">
+                                        <label asp-for="Purpose" class="control-label"></label>
+                                        <input asp-for="Purpose" class="form-control"  />
+                                        <span asp-validation-for="Purpose" class="text-danger"></span>
+                                    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label asp-for="CardNo" class="control-label"></label>
+                                    <div class="d-flex align-items-center">
+                                        <input asp-for="CardNo" id="cardNoInput" class="form-control" />
+                                        <span id="qrCodeButton" class="ms-2" style="cursor: pointer;">
+                                            <i class="bi bi-camera" style="font-size: 1.5rem; color: #007bff;" data-bs-toggle="modal" data-bs-target="#qrCodeModal"></i>
+                                        </span>
+                                    </div>
+                                    <span asp-validation-for="CardNo" class="text-danger"></span>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label asp-for="VehicleType" class="control-label"></label>
+                                    <input asp-for="VehicleType" class="form-control"  />
+                                    <span asp-validation-for="VehicleType" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row align-items-stretch">
+                                <div class="col-6 mb-3 d-flex flex-column">
+                                    <div class="mb-3">
+                                        <label asp-for="PhoneNo" class="control-label"></label>
+                                        <input asp-for="PhoneNo" class="form-control"  />
+                                        <span asp-validation-for="PhoneNo" class="text-danger"></span>
+                                    </div>
+                                    <div class="">
+                                        <label asp-for="DriverName" class="control-label"></label>
+                                        <input asp-for="DriverName" class="form-control"  />
+                                        <span asp-validation-for="DriverName" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 ">
+                                    <label asp-for="Remark" class="control-label"></label>
+                                    <textarea asp-for="Remark" class="form-control h-75" ></textarea>
+                                    <span asp-validation-for="Remark" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label asp-for="PersonalId" class="control-label"></label>
+                                    <input asp-for="PersonalId" class="form-control"  />
+                                    <span asp-validation-for="PersonalId" class="text-danger"></span>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label asp-for="TypeCode" class="control-label"></label>
+                                    <input asp-for="TypeCode" class="form-control" reaonly />
+                                    <span asp-validation-for="TypeCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6 mb-3 ">
+                                    <label asp-for="IsCarried" class="control-label text-danger"></label>
+                                    <input asp-for="IsCarried" type="checkbox" class="form-check-input" />
+                                    <span asp-validation-for="IsCarried" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-6  mb-3 ">
+                                    <label asp-for="IsCarriedIn" class="control-label text-danger"></label>
+                                    <input asp-for="IsCarriedIn" type="checkbox" class="form-check-input" />
+                                    <span asp-validation-for="IsCarriedIn" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="history.back()">Quay lại</button>
+                <button type="submit" form="formCreate" class="btn btn-primary">Cho vào</button>
+            </div>
+        </div>
+
+    </div>
+    <!-- Kết quả tải lên -->
+    @if (ViewBag.Results != null)
+    {
+        <div class="custom-alert">
+            <h6>Kết quả:</h6>
+            <ul>
+                @foreach (var result in (List<string>)ViewBag.Results)
+                {
+                    <li>@result</li>
+                }
+            </ul>
+        </div>
+    }
+</div>
+
+
+<!-- Modal QR Code -->
+<div class="modal fade" id="qrCodeModal" tabindex="-1" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="qrCodeModalLabel">Quét QR Code</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <video id="camera" autoplay playsinline muted class="w-100 h-auto border border-secondary rounded"></video>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                    <p id="message" class="text-danger mt-3"></p> <!-- Thông báo trạng thái -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="switchCamera" class="btn btn-primary mt-3">Đổi Camera</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal QR Code -->
+
+<script>
+    let currentStream = null;
+    let isFrontCamera = false;
+    let scanning = false;
+    let qrDetected = false;
+
+    const video = document.getElementById('camera');
+    const canvas = document.getElementById('canvas');
+    const switchCameraButton = document.getElementById('switchCamera');
+    const qrCodeButton = document.getElementById('qrCodeButton');
+    const qrCodeModal = document.getElementById('qrCodeModal');
+    const message = document.getElementById('message');
+    const cardNoInput = document.getElementById('cardNoInput');
+
+    // Hàm khởi động camera
+    async function startCamera() {
+        try {
+            if (currentStream) {
+                currentStream.getTracks().forEach((track) => track.stop());
+            }
+
+            const constraints = {
+                video: {
+                    facingMode: isFrontCamera ? 'user' : 'environment',
+                    width: { ideal: 1920 },
+                    height: { ideal: 1080 },
+                    frameRate: { ideal: 60 },
+                },
+            };
+
+            currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+            video.srcObject = currentStream;
+
+            video.addEventListener('loadedmetadata', () => {
+                video.play();
+                if (!scanning) {
+                    scanning = true;
+                    scanQRCode();
+                }
+            });
+        } catch (err) {
+            console.error('Error accessing camera:', err);
+            message.innerText = 'Không thể truy cập camera. Vui lòng kiểm tra quyền truy cập.';
+        }
+    }
+
+    // Hàm dừng camera
+    function stopCamera() {
+        scanning = false;
+        if (currentStream) {
+            currentStream.getTracks().forEach((track) => track.stop());
+            currentStream = null;
+        }
+    }
+
+    // Hàm quét QR Code
+    function scanQRCode() {
+        const context = canvas.getContext('2d', { willReadFrequently: true });
+
+        const scan = () => {
+            if (!scanning) return;
+
+            if (video.videoWidth === 0 || video.videoHeight === 0) {
+                requestAnimationFrame(scan);
+                return;
+            }
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+            if (code) {
+                qrDetected = true;
+                console.log('QR Code detected:', code.data);
+                cardNoInput.value = code.data;
+
+                bootstrap.Modal.getInstance(document.getElementById('qrCodeModal')).hide();
+                stopCamera();
+            } else {
+                message.innerText = 'Không tìm thấy mã QR, vui lòng giữ camera ổn định...';
+            }
+
+            if (scanning) {
+                requestAnimationFrame(scan);
+            }
+        };
+
+        scan();
+    }
+
+    // Sự kiện chuyển đổi camera
+    switchCameraButton.addEventListener('click', () => {
+        isFrontCamera = !isFrontCamera;
+        stopCamera();
+        startCamera();
+    });
+
+    // Sự kiện mở modal để bắt đầu camera
+    qrCodeButton.addEventListener('click', () => {
+        startCamera();
+    });
+
+    // Sự kiện đóng modal để dừng camera
+    qrCodeModal.addEventListener('hidden.bs.modal', () => {
+        stopCamera();
+    });
+
+</script>
