@@ -64,6 +64,22 @@ else
     throw new InvalidOperationException("Firebase configuration is missing.");
 }
 
+// Lấy cấu hình Firebase từ biến môi trường
+var firebaseJson2 = Environment.GetEnvironmentVariable("FIREBASE_CONFIG");
+
+if (!string.IsNullOrEmpty(firebaseJson2))
+{
+    FirebaseApp.Create(new AppOptions
+    {
+        Credential = GoogleCredential.FromJson(firebaseJson2)
+    });
+}
+else
+{
+    throw new InvalidOperationException("Firebase configuration is missing.");
+}
+
+
 var app = builder.Build();
 
 // Middleware configuration
