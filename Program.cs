@@ -50,19 +50,19 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Configure Firebase Admin SDK
-var firebaseJson = builder.Configuration["FirebaseConfig:Json"];
-if (!string.IsNullOrEmpty(firebaseJson))
-{
-    FirebaseApp.Create(new AppOptions
-    {
-        Credential = GoogleCredential.FromJson(firebaseJson)
-    });
-}
-else
-{
-    throw new InvalidOperationException("Firebase configuration is missing.");
-}
+//// Configure Firebase Admin SDK
+//var firebaseJson = builder.Configuration["FirebaseConfig:Json"];
+//if (!string.IsNullOrEmpty(firebaseJson))
+//{
+//    FirebaseApp.Create(new AppOptions
+//    {
+//        Credential = GoogleCredential.FromJson(firebaseJson)
+//    });
+//}
+//else
+//{
+//    throw new InvalidOperationException("Firebase configuration is missing.");
+//}
 
 // Lấy cấu hình Firebase từ biến môi trường
 var firebaseJson2 = Environment.GetEnvironmentVariable("FIREBASE_CONFIG");
