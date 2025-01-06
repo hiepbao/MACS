@@ -65,19 +65,37 @@ builder.Services.AddSession(options =>
 //}
 
 // Lấy cấu hình Firebase từ biến môi trường
-var firebaseJson2 = Environment.GetEnvironmentVariable("FIREBASE_CONFIG");
+var firebaseJson = Environment.GetEnvironmentVariable("FIREBASE_CONFIG");
 
-if (!string.IsNullOrEmpty(firebaseJson2))
+// Kiểm tra nếu biến môi trường không tồn tại hoặc rỗng
+if (string.IsNullOrEmpty(firebaseJson))
 {
-    FirebaseApp.Create(new AppOptions
-    {
-        Credential = GoogleCredential.FromJson(firebaseJson2)
-    });
-}
-else
-{
+    Console.WriteLine("Firebase configuration is missing.");
     throw new InvalidOperationException("Firebase configuration is missing.");
 }
+
+try
+{
+    // In nội dung JSON ra console để kiểm tra (chỉ sử dụng trong môi trường debug)
+    Console.WriteLine("Firebase JSON Loaded:");
+    Console.WriteLine(firebaseJson);
+
+    // Tạo FirebaseApp với cấu hình
+    FirebaseApp.Create(new AppOptions
+    {
+        Credential = GoogleCredential.FromJson(firebaseJson)
+    });
+
+    Console.WriteLine("FirebaseApp initialized successfully.");
+}
+catch (Exception ex)
+{
+    // Log lỗi chi tiết
+    Console.WriteLine($"Error initializing FirebaseApp: {ex.Message}");
+    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+    throw;
+}
+
 
 
 var app = builder.Build();
