@@ -19,7 +19,7 @@ namespace MACS.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync("https://localhost:7279/api/Auth/GetAllUsers");
+                var response = await _httpClient.GetAsync($"{ApiBaseUrl}/api/Auth/GetAllUsers");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -39,7 +39,7 @@ namespace MACS.Services
 
         public async Task<UserAccount> GetUserByIdAsync(int userId)
         {
-            var response = await _httpClient.GetAsync($"https://localhost:7279/api/Auth/GetUserById/{userId}");
+            var response = await _httpClient.GetAsync($"{ApiBaseUrl}/api/Auth/GetUserById/{userId}");
 
             if (response.IsSuccessStatusCode)
             {
