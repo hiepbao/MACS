@@ -25,19 +25,22 @@ const parseJwt = (token) => {
     }
 };
 
+
+// Kiểm tra nền tảng iOS
+const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
 // Hàm chính
 const main = async () => {
     const jwt = getCookie("UserToken");
 
     if (!jwt) {
         console.error("JWT không tồn tại. Không thể xác minh quyền.");
-        return;
     }
 
     const decodedJwt = parseJwt(jwt);
     if (!decodedJwt || decodedJwt.role !== "store") {
         console.error("Người dùng không có quyền 'store' hoặc JWT không hợp lệ.");
-        return;
     }
 
     console.log("Người dùng được xác minh với quyền 'store'.");

@@ -38,3 +38,19 @@ messaging.onBackgroundMessage(async (payload) => {
     console.log("[Service Worker] Hiển thị thông báo thành công.");
 });
 
+self.addEventListener('notificationclick', function (event) {
+    const urlToOpen = event.notification.data?.url || '/';
+    event.notification.close();
+    event.waitUntil(
+        clients.matchAll({ type: 'window' }).then(windowClients => {
+            for (const client of windowClients) {
+                if (client.url === urlToOpen && 'focus' in client) {
+                    return client.focus();  // Chuyển tab hiện tại về trang Home nếu đã mở
+                }
+            }
+            return clients.openWindow(urlToOpen);  // Mở trang Home nếu chưa có tab nào mở
+        })
+    );
+});
+
+

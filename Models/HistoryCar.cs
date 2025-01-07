@@ -1,4 +1,5 @@
 ﻿
+using MACSAPI.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -90,6 +91,10 @@ namespace MACS.Models
         [MaxLength(50)]
         [Display(Name = "Sửa bởi")]
         public string? ModifiedBy { get; set; } // varchar(50), not null
+
+
+        [Display(Name = "Id user")]
+        public int? UserId { get; set; }
 
     }
 }

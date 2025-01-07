@@ -82,6 +82,15 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label for="UserId" class="control-label">Phân công cho</label>
+                                    <select asp-for="UserId" class="form-control bg-white border-secondary rounded" asp-items="ViewBag.UserList" data-val="false">
+                                        <option value="">-- Chọn người dùng --</option>
+                                    </select>
+                                    <span asp-validation-for="UserId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="form-group col-6 mb-3 ">
                                     <label asp-for="IsCarried" class="control-label text-danger"></label>
                                     <input asp-for="IsCarried" type="checkbox" class="form-check-input" />

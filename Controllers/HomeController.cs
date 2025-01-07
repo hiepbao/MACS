@@ -1,9 +1,12 @@
 ﻿using MACS.Models;
 using MACS.Services;
 using MACSAPI.Data;
+using MACSAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Data;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -27,16 +30,24 @@ namespace MACS.Controllers
             return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
         }
 
-        private string GetUserNameFromToken()
+        private UserInfo GetUserInfoFromToken()
         {
             var jwtToken = HttpContext.Request.Cookies["UserToken"];
             if (string.IsNullOrEmpty(jwtToken))
-                return "Unknown User";
+                return new UserInfo { FullName = "Unknown User" };
 
             var handler = new JwtSecurityTokenHandler();
             var token = handler.ReadJwtToken(jwtToken);
-            return token.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value ?? "Unknown User";
+
+            return new UserInfo
+            {
+                AccountId = int.TryParse(token.Claims.FirstOrDefault(c => c.Type == "AccountId")?.Value, out var accountId) ? accountId : 0, 
+                FullName = token.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value ?? "Unknown User",
+                Role = token.Claims.FirstOrDefault(c => c.Type == "role")?.Value ?? "User"
+            };
+
         }
+
 
         private IActionResult SetErrorMessageAndRedirect(string message, string action)
         {
@@ -44,13 +55,40 @@ namespace MACS.Controllers
             return RedirectToAction(action);
         }
 
-        private async Task NotifyAllTokensAsync(string title, string message)
+        private async Task NotifyUserTokenAsync(int? userId, string title, string message, string clickActionUrl)
         {
-            // Sử dụng Firebase Admin SDK để gửi thông báo mà không cần access token từ file JSON
-            var tokens = await _dbContext.TokenRequest.Select(t => t.Token).Distinct().ToListAsync();
+            List<string> tokens;
+
+            if (userId == null || userId == 0)  // Nếu không chọn người dùng
+            {
+                #nullable disable
+                tokens = await _dbContext.TokenRequest
+                    .Where(t => t.Role.ToLower() == "store")
+                    .Select(t => t.Token)
+                    .Distinct()
+                    .ToListAsync();
+                #nullable enable
+
+            }
+            else
+            {
+                var userToken = await _dbContext.TokenRequest
+                    .Where(t => t.Id == userId)
+                    .Select(t => t.Token)
+                    .FirstOrDefaultAsync();  // Lấy token của người dùng được chọn
+
+                tokens = !string.IsNullOrEmpty(userToken) ? new List<string> { userToken } : new List<string>();
+            }
+
+            if (tokens.Count == 0)
+            {
+                Console.WriteLine("No tokens found to send notifications.");
+                return;
+            }
+
+            // Gửi thông báo cho tất cả các token trong danh sách
             foreach (var token in tokens)
             {
-                // Sử dụng Firebase Messaging để gửi thông báo
                 var messageToSend = new FirebaseAdmin.Messaging.Message()
                 {
                     Notification = new FirebaseAdmin.Messaging.Notification
@@ -58,12 +96,16 @@ namespace MACS.Controllers
                         Title = title,
                         Body = message
                     },
+                    Data = new Dictionary<string, string>
+                    {
+                        { "url", clickActionUrl }  // Gửi URL trong dữ liệu tùy chỉnh
+                    },
                     Token = token
+                    
                 };
 
                 try
                 {
-                    // Gửi thông báo qua Firebase Messaging
                     string response = await FirebaseAdmin.Messaging.FirebaseMessaging.DefaultInstance.SendAsync(messageToSend);
                     Console.WriteLine($"Successfully sent message: {response}");
                 }
@@ -75,6 +117,8 @@ namespace MACS.Controllers
         }
 
 
+
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -84,11 +128,19 @@ namespace MACS.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var users = await _historyCarService.GetAllUsersAsync();  // Gọi API lấy danh sách user
+
+            ViewBag.UserList = users.Select(u => new SelectListItem
+            {
+                Value = u.AccountId.ToString(),  // Giá trị ID user
+                Text = u.Username         // Tên user hiển thị
+            }).ToList();
+
             return View(new HistoryCar
             {
-                GetInDate = GetCurrentTime(),
+                GetInDate = DateTime.Now,
                 IsCarriedOut = false,
                 IsGetOut = false
             });
@@ -99,21 +151,31 @@ namespace MACS.Controllers
         public async Task<IActionResult> Create(HistoryCar historyCar)
         {
             if (!ModelState.IsValid)
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine($"Model Error: {error.ErrorMessage}");
+                }
                 return View(historyCar);
+            }
+
 
             if (await _historyCarService.CheckCardHasCarInAsync(historyCar.CardNo))
                 return SetErrorMessageAndRedirect("Thẻ này đã có xe vào.", "Index");
 
             historyCar.GetInDate = GetCurrentTime();
             historyCar.IsGetIn = true;
-            historyCar.GetInBy = historyCar.CreatedBy = GetUserNameFromToken();
-
+            var userInfo = GetUserInfoFromToken();
+            historyCar.GetInBy = historyCar.CreatedBy = userInfo.FullName;  
             if (await _historyCarService.CreateHistoryCarAsync(historyCar))
             {
                 try
                 {
-                    await NotifyAllTokensAsync("Xe vào", $"Xe mới {historyCar.CardNo} vừa vào hệ thống.");
+                    string clickActionUrl = "/Home/Index";  
+                    await NotifyUserTokenAsync(historyCar.UserId, "Xe vào", $"Xe mới {historyCar.CardNo} vừa vào hệ thống.", clickActionUrl);
                     TempData["SuccessMessage"] = "Cho xe vào thành công";
+
+
                 }
                 catch (Exception ex)
                 {
@@ -122,7 +184,7 @@ namespace MACS.Controllers
 
                 return RedirectToAction("Index");
             }
-
+            TempData["ErrorMessage"] = $"Lỗi khi thêm";
             ModelState.AddModelError("", "Không thể tạo mới dữ liệu. Vui lòng thử lại.");
             return View(historyCar);
         }
@@ -157,7 +219,8 @@ namespace MACS.Controllers
             historyCar.ModifiedDate = GetCurrentTime();
             historyCar.GetOutDate = GetCurrentTime();
             historyCar.IsGetOut = true;
-            historyCar.GetOutBy = GetUserNameFromToken();
+            var userInfo = GetUserInfoFromToken();
+            historyCar.GetOutBy = userInfo.FullName;
 
             if (await _historyCarService.UpdateHistoryCarAsync(cardNo, historyCar))
             {
@@ -174,21 +237,35 @@ namespace MACS.Controllers
         {
             try
             {
-                var jwt = Request.Cookies["UserToken"];
-                if (string.IsNullOrEmpty(jwt))
-                    return Unauthorized("JWT not found.");
+                //var jwt = Request.Cookies["UserToken"];
+                //if (string.IsNullOrEmpty(jwt))
+                //    return Unauthorized("JWT not found.");
 
-                var handler = new JwtSecurityTokenHandler();
-                var token = handler.ReadJwtToken(jwt);
+                //var handler = new JwtSecurityTokenHandler();
+                //var token = handler.ReadJwtToken(jwt);
 
-                if (token.Claims.FirstOrDefault(c => c.Type == "role")?.Value != "store")
-                    return Forbid("User does not have the required role.");
+                //if (token.Claims.FirstOrDefault(c => c.Type == "role")?.Value != "store")
+                //    return Forbid("User does not have the required role.");
+                var userInfo = GetUserInfoFromToken();
+                var existingToken = _dbContext.TokenRequest.FirstOrDefault(t => t.Id == userInfo.AccountId);
 
-                _dbContext.TokenRequest.Add(new TokenRequest
+                if (existingToken != null)
                 {
-                    Id = Guid.NewGuid(),
-                    Token = model.Token
-                });
+                    // Nếu token đã tồn tại, cập nhật token thay vì thêm mới
+                    existingToken.Token = model.Token;
+                    _dbContext.TokenRequest.Update(existingToken);
+                    
+                }
+                else
+                {
+                    // Nếu chưa tồn tại, thêm mới
+                    _dbContext.TokenRequest.Add(new TokenRequest
+                    {
+                        Id = userInfo.AccountId,  // AccountId làm khóa chính
+                        Token = model.Token,
+                        Role = userInfo.Role,
+                    });
+                }
                 _dbContext.SaveChanges();
 
                 return Ok("Token saved successfully.");

@@ -2,8 +2,9 @@
 {
     public class TokenRequest
     {
-        public Guid? Id { get; set; }
+        public int Id { get; set; }
         public string? Token { get; set; }
+        public string? Role { get; set; }
     }
 
     public class FcmToken

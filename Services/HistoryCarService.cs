@@ -1,4 +1,5 @@
 ﻿using MACS.Models;
+using MACSAPI.Models;
 using System.Text;
 using System.Text.Json;
 
@@ -13,6 +14,42 @@ namespace MACS.Services
         {
             _httpClient = httpClient;
         }
+
+        public async Task<List<UserAccount>> GetAllUsersAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("https://localhost:7279/api/Auth/GetAllUsers");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var users = await response.Content.ReadFromJsonAsync<List<UserAccount>>();
+                    return users ?? new List<UserAccount>();
+                }
+                else
+                {
+                    throw new HttpRequestException($"Lỗi API: {response.ReasonPhrase}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Lỗi khi gọi API: {ex.Message}");
+            }
+        }
+
+        public async Task<UserAccount> GetUserByIdAsync(int userId)
+        {
+            var response = await _httpClient.GetAsync($"https://localhost:7279/api/Auth/GetUserById/{userId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var user = await response.Content.ReadFromJsonAsync<UserAccount>();
+                return user;
+            }
+
+            return null;
+        }
+
 
         public async Task<List<HistoryCar>> GetAllHistoryCarsAsync()
         {

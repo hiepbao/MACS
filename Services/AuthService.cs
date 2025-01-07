@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using MACSAPI.Models;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace MACS.Services
@@ -13,6 +14,7 @@ namespace MACS.Services
             _httpClient = httpClient;
         }
 
+        
         public async Task<string> LoginAsync(string username, string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
