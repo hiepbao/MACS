@@ -135,7 +135,7 @@ namespace MACS.Controllers
             ViewBag.UserList = users.Select(u => new SelectListItem
             {
                 Value = u.AccountId.ToString(),  // Giá trị ID user
-                Text = u.Username         // Tên user hiển thị
+                Text = u.FullName         // Tên user hiển thị
             }).ToList();
 
             return View(new HistoryCar
