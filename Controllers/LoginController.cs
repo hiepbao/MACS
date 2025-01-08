@@ -44,7 +44,7 @@ namespace MACS.Controllers
                 // Lưu JWT vào Cookie
                 var cookieOptions = new CookieOptions
                 {
-                    HttpOnly = false, // Cho phép JavaScript truy cập
+                    HttpOnly = true, // Cho phép JavaScript truy cập
                     Secure = false,   // Đặt false nếu đang chạy trên localhost, true nếu dùng HTTPS
                     SameSite = SameSiteMode.Lax, // Lax phù hợp hơn để tránh lỗi CORS trong một số trường hợp
                     Expires = DateTime.UtcNow.AddHours(1) // Thời gian sống của cookie

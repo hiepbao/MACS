@@ -22,7 +22,8 @@ builder.Services.AddHttpClient<HomeController>();
 
 builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiBaseUrl"));
 builder.Services.Configure<FirebaseConfig>(builder.Configuration.GetSection("FirebaseConfig"));
-builder.Services.AddSingleton<NotificationService>();
+builder.Services.AddScoped<NotificationService>();
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -39,7 +40,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddScoped<NotificationService>();
 
 // Session configuration
 builder.Services.AddDistributedMemoryCache();

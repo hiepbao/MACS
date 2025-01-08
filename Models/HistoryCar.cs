@@ -94,7 +94,10 @@ namespace MACS.Models
 
 
         [Display(Name = "Id user")]
-        public int? UserId { get; set; }
+        public List<int>? UserIds { get; set; }
+
+        [Display(Name = "Id Group")]
+        public int GroupId { get; set; }
 
     }
 }

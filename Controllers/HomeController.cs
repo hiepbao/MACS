@@ -17,12 +17,14 @@ namespace MACS.Controllers
         private readonly QRCodeService _qrCodeService;
         private readonly HistoryCarService _historyCarService;
         private readonly AppDbContext _dbContext;
+        private readonly NotificationService _notificationService;
 
-        public HomeController(QRCodeService qrCodeService, HistoryCarService historyCarService, AppDbContext dbContext)
+        public HomeController(QRCodeService qrCodeService, HistoryCarService historyCarService, AppDbContext dbContext, NotificationService notificationService)
         {
             _qrCodeService = qrCodeService;
             _historyCarService = historyCarService;
             _dbContext = dbContext;
+            _notificationService = notificationService;
         }
 
         private DateTime GetCurrentTime()
@@ -55,70 +57,6 @@ namespace MACS.Controllers
             return RedirectToAction(action);
         }
 
-        private async Task NotifyUserTokenAsync(int? userId, string title, string message, string clickActionUrl)
-        {
-            List<string> tokens;
-
-            if (userId == null || userId == 0)  // Nếu không chọn người dùng
-            {
-                #nullable disable
-                tokens = await _dbContext.TokenRequest
-                    .Where(t => t.Role.ToLower() == "store")
-                    .Select(t => t.Token)
-                    .Distinct()
-                    .ToListAsync();
-                #nullable enable
-
-            }
-            else
-            {
-                var userToken = await _dbContext.TokenRequest
-                    .Where(t => t.Id == userId)
-                    .Select(t => t.Token)
-                    .FirstOrDefaultAsync();  // Lấy token của người dùng được chọn
-
-                tokens = !string.IsNullOrEmpty(userToken) ? new List<string> { userToken } : new List<string>();
-            }
-
-            if (tokens.Count == 0)
-            {
-                Console.WriteLine("No tokens found to send notifications.");
-                return;
-            }
-
-            // Gửi thông báo cho tất cả các token trong danh sách
-            foreach (var token in tokens)
-            {
-                var messageToSend = new FirebaseAdmin.Messaging.Message()
-                {
-                    Notification = new FirebaseAdmin.Messaging.Notification
-                    {
-                        Title = title,
-                        Body = message
-                    },
-                    Data = new Dictionary<string, string>
-                    {
-                        { "url", clickActionUrl }  // Gửi URL trong dữ liệu tùy chỉnh
-                    },
-                    Token = token
-                    
-                };
-
-                try
-                {
-                    string response = await FirebaseAdmin.Messaging.FirebaseMessaging.DefaultInstance.SendAsync(messageToSend);
-                    Console.WriteLine($"Successfully sent message: {response}");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error sending message to token {token}: {ex.Message}");
-                }
-            }
-        }
-
-
-
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -130,12 +68,20 @@ namespace MACS.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var users = await _historyCarService.GetAllUsersAsync();  // Gọi API lấy danh sách user
+            var allUsers = await _historyCarService.GetAllUsersAsync(); 
 
-            ViewBag.UserList = users.Select(u => new SelectListItem
+            var userGroups = await _historyCarService.GetGroupsUsersAsync(); 
+
+            ViewBag.UserList = allUsers.Select(u => new SelectListItem
             {
-                Value = u.AccountId.ToString(),  // Giá trị ID user
-                Text = u.FullName         // Tên user hiển thị
+                Value = u.AccountId.ToString(),
+                Text = u.FullName
+            }).ToList();
+
+            ViewBag.GroupList = userGroups.Select(g => new SelectListItem
+            {
+                Value = g.GroupId.ToString(),
+                Text = g.GroupName
             }).ToList();
 
             return View(new HistoryCar
@@ -166,13 +112,43 @@ namespace MACS.Controllers
             historyCar.GetInDate = GetCurrentTime();
             historyCar.IsGetIn = true;
             var userInfo = GetUserInfoFromToken();
-            historyCar.GetInBy = historyCar.CreatedBy = userInfo.FullName;  
+            historyCar.GetInBy = historyCar.CreatedBy = userInfo.FullName;
             if (await _historyCarService.CreateHistoryCarAsync(historyCar))
             {
                 try
                 {
-                    string clickActionUrl = "/Home/Index";  
-                    await NotifyUserTokenAsync(historyCar.UserId, "Xe vào", $"Xe mới {historyCar.CardNo} vừa vào hệ thống.", clickActionUrl);
+                    string clickActionUrl = "/Home/Index";
+                    if (historyCar.UserIds == null || !historyCar.UserIds.Any()) 
+                    {
+                        if (historyCar.GroupId > 0) 
+                        {
+                            var selectedGroup = (await _historyCarService.GetGroupsUsersAsync()).FirstOrDefault(g => g.GroupId == historyCar.GroupId);
+                            if (selectedGroup != null && selectedGroup.Members.Any()) 
+                            {
+                                foreach (var user in selectedGroup.Members)
+                                {
+                                    await _notificationService.NotifyUserTokenAsync(user.AccountId, "Xe vào", $"Xe mới {historyCar.LicensePlate} vừa vào hệ thống.", clickActionUrl);
+                                }
+                            }
+                            else
+                            {
+                                TempData["ErrorMessage"] = "Nhóm được chọn không tồn tại hoặc không có thành viên.";
+                            }
+                        }
+                        else
+                        {
+                            await _notificationService.NotifyUserTokenAsync(null, "Xe vào", $"Xe mới {historyCar.LicensePlate} vừa vào hệ thống.", clickActionUrl); 
+                        }
+                    }
+                    else 
+                    {
+                        foreach (var userId in historyCar.UserIds)
+                        {
+                            await _notificationService.NotifyUserTokenAsync(userId, "Xe vào", $"Xe mới {historyCar.LicensePlate} vừa vào hệ thống.", clickActionUrl);
+                        }
+                    }
+
+
                     TempData["SuccessMessage"] = "Cho xe vào thành công";
 
 
@@ -237,15 +213,6 @@ namespace MACS.Controllers
         {
             try
             {
-                //var jwt = Request.Cookies["UserToken"];
-                //if (string.IsNullOrEmpty(jwt))
-                //    return Unauthorized("JWT not found.");
-
-                //var handler = new JwtSecurityTokenHandler();
-                //var token = handler.ReadJwtToken(jwt);
-
-                //if (token.Claims.FirstOrDefault(c => c.Type == "role")?.Value != "store")
-                //    return Forbid("User does not have the required role.");
                 var userInfo = GetUserInfoFromToken();
                 var existingToken = _dbContext.TokenRequest.FirstOrDefault(t => t.Id == userInfo.AccountId);
 

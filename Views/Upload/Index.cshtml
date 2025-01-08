@@ -128,7 +128,7 @@
 
                 const fileContentCell = document.createElement('td');
                 if (file.name.endsWith('.zip')) {
-                    const contentList = await getZipContent(file);
+                    const contentList = await getZipContent(file, index);
                     fileContentCell.appendChild(contentList);
                 } else {
                     fileContentCell.textContent = 'Không hỗ trợ đọc nội dung';
@@ -136,23 +136,22 @@
                 row.appendChild(fileContentCell);
 
                 const actionCell = document.createElement('td');
-
                 actionCell.className = 'd-flex justify-content-center align-items-center';
 
                 const removeButton = document.createElement('button');
-                removeButton.className = 'btn btn-link p-0 text-danger'; 
+                removeButton.className = 'btn btn-link p-0 text-danger';
                 removeButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
 
-                removeButton.addEventListener('click', () => {
-                    files.splice(index, 1); 
+                removeButton.dataset.fileName = file.name;
+                removeButton.addEventListener('click', (event) => {
+                    const fileNameToRemove = event.currentTarget.dataset.fileName;
+                    files = files.filter(f => f.name !== fileNameToRemove);  // Xóa theo tên
                     renderFileTable();
                     updateFileInput();
                 });
 
                 actionCell.appendChild(removeButton);
                 row.appendChild(actionCell);
-
-
 
                 fileTableBody.appendChild(row);
             }
@@ -161,7 +160,7 @@
         };
 
         // Đọc nội dung file zip
-        const getZipContent = async (file) => {
+        const getZipContent = async (file, fileIndex) => {
             const reader = new FileReader();
 
             return new Promise((resolve) => {
@@ -170,13 +169,33 @@
                     const zip = await jszip.loadAsync(event.target.result);
 
                     const ul = document.createElement('ul');
+                    let hasFolder = false;
+
                     for (const filename of Object.keys(zip.files)) {
                         const li = document.createElement('li');
                         li.textContent = filename;
                         ul.appendChild(li);
+
+                        // Kiểm tra nếu là folder (tên kết thúc bằng '/')
+                        if (filename.includes('/')) {
+                            hasFolder = true;
+                        }
                     }
+
+                    // Hiển thị cảnh báo nếu có folder
+                    if (hasFolder) {
+                        const confirmContinue = confirm(`File "${file.name}" có chứa folder. Bạn có muốn tiếp tục thêm không?`);
+                        if (!confirmContinue) {
+                            files = files.filter(f => f.name !== file.name);
+                            renderFileTable();
+                            updateFileInput();
+                            return resolve(document.createTextNode('Đã xóa file chứa folder.'));
+                        }
+                    }
+
                     resolve(ul);
                 };
+
                 reader.onerror = (error) => {
                     console.error('Error reading file:', error);
                     resolve(document.createTextNode('Không thể đọc nội dung file zip.'));
@@ -186,5 +205,6 @@
         };
     });
 </script>
+
 
 

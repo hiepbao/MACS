@@ -82,14 +82,35 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-6 mb-3">
-                                    <label for="UserId" class="control-label">Phân công cho</label>
-                                    <select asp-for="UserId" class="form-control bg-white border-secondary rounded" asp-items="ViewBag.UserList" data-val="false">
-                                        <option value="">-- Chọn người dùng --</option>
-                                    </select>
-                                    <span asp-validation-for="UserId" class="text-danger"></span>
+                                <div class="col-12">
+                                    <label class="control-label">Phân công cho</label>
+                                    <!-- Div chứa danh sách user với max-height và thanh cuộn -->
+                                    <div class="border p-3 rounded bg-white overflow-auto" style="max-height: 150px;">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="assign-all" />
+                                            <label class="form-check-label" for="assign-all">Phân công tất cả</label>
+                                        </div>
+                                        @foreach (var group in (IEnumerable<SelectListItem>)ViewBag.GroupList)
+                                        {
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="group-@group.Value" name="GroupId" value="@group.Value" />
+                                                <label class="form-check-label" for="group-@group.Value">@group.Text</label>
+                                            </div>
+                                        }
+                                        @foreach (var user in (IEnumerable<SelectListItem>)ViewBag.UserList)
+                                        {
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input user-checkbox" id="user-@user.Value" name="UserIds" value="@user.Value" />
+                                                <label class="form-check-label" for="user-@user.Value">@user.Text</label>
+                                            </div>
+                                        }
+                                        
+                                    </div>
                                 </div>
+
                             </div>
+
+
                             <div class="row">
                                 <div class="form-group col-6 mb-3 ">
                                     <label asp-for="IsCarried" class="control-label text-danger"></label>

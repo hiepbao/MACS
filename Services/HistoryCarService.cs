@@ -36,6 +36,28 @@ namespace MACS.Services
                 throw new Exception($"Lỗi khi gọi API: {ex.Message}");
             }
         }
+        public async Task<List<UserGroup>> GetGroupsUsersAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{ApiBaseUrl}/api/Auth/GetGroupUsers");  
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var groups = await response.Content.ReadFromJsonAsync<List<UserGroup>>();
+                    return groups ?? new List<UserGroup>();
+                }
+                else
+                {
+                    throw new HttpRequestException($"Lỗi API: {response.ReasonPhrase}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Lỗi khi gọi API: {ex.Message}");
+            }
+        }
+
 
         public async Task<UserAccount> GetUserByIdAsync(int userId)
         {
