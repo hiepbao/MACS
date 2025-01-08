@@ -15,8 +15,8 @@ namespace MACS.Controllers
 
         public async Task<IActionResult> Index()
         {
-            
-             return View("Index"); 
+            await Task.Delay(100);
+            return View("Index"); 
            
         }
 

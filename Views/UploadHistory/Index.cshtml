@@ -36,9 +36,16 @@
                                     <td>@record.UploadTime</td>
                                     <td>
                                         <ul>
-                                            @foreach (var file in record.FileList)
+                                            @if (record.FileList != null && record.FileList.Any())
                                             {
-                                                <li>@file</li>
+                                                @foreach (var file in record.FileList)
+                                                {
+                                                    <li>@file</li>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <li>Không có file nào</li>
                                             }
                                         </ul>
                                     </td>

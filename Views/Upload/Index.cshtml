@@ -44,18 +44,20 @@
                     <label for="zipFiles" class="form-label text-danger">Chọn các file .zip</label>
                     <input class="form-control" type="file" id="zipFiles" name="zipFiles" accept=".zip" multiple required>
                 </div>
-                <table class="table table-bordered mt-3 " id="fileTable">
-                    <thead class="table-primary ">
-                        <tr>
-                            <th>Tên file</th>
-                            <th>Dung lượng (KB)</th>
-                            <th>Nội dung file</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody id="fileTableBody">
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-bordered mt-3" id="fileTable">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Tên file</th>
+                                <th>Dung lượng (KB)</th>
+                                <th>Nội dung file</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fileTableBody">
+                        </tbody>
+                    </table>
+                </div>
                 <div class="mt-3">
                     <button type="submit" class="btn btn-primary" id="uploadBtn" disabled>Tải lên</button>
                 </div>
@@ -85,18 +87,30 @@
         const uploadBtn = document.getElementById('uploadBtn');
 
         let files = [];
+        const MAX_FILE_SIZE_MB = 5;
 
         // Khi người dùng chọn file
         fileInput.addEventListener('change', (event) => {
             const newFiles = Array.from(event.target.files);
-            // Loại bỏ file trùng lặp
-            const uniqueFiles = newFiles.filter((newFile) => {
-                return !files.some((existingFile) => existingFile.name === newFile.name && existingFile.size === newFile.size);
+            const allowedFiles = [];
+
+            newFiles.forEach((file) => {
+                const fileSizeMB = file.size / (1024 * 1024);
+                if (fileSizeMB > MAX_FILE_SIZE_MB) {
+                    alert(`File "${file.name}" vượt quá dung lượng cho phép (${MAX_FILE_SIZE_MB} MB).`);
+                } else {
+                    allowedFiles.push(file);  
+                }
+            });
+
+            const uniqueFiles = allowedFiles.filter((newFile) => {
+                return !files.some((existingFile) => existingFile.name === newFile.name);
             });
 
             files = files.concat(uniqueFiles);
-            renderFileTable();
+            renderFileTable();  
         });
+
 
         // Cập nhật giá trị input file mỗi khi danh sách file thay đổi
         const updateFileInput = () => {
@@ -189,7 +203,7 @@
                             files = files.filter(f => f.name !== file.name);
                             renderFileTable();
                             updateFileInput();
-                            return resolve(document.createTextNode('Đã xóa file chứa folder.'));
+                            return resolve(document.createTextNode(`Đã xóa file '${file.name}' chứa folder.`));
                         }
                     }
 
