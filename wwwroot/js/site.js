@@ -80,21 +80,70 @@ const main = async () => {
             return;
         }
 
-        // Hiển thị thông báo với âm thanh
-        const notificationOptions = {
-            body,
-            icon: icon || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4fepgMlmqNvoHEYq9sOJ4SSuTwznMOKTq4g&s",
-            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPiOEI7-694Ef1ym2Uw7HquUBQbyHUfU2N7Q&s",
-            //requireInteraction: true // Thông báo sẽ giữ lại cho đến khi người dùng tương tác
+        // Tạo toast notification
+        const showToastNotification = (title, body, icon) => {
+            const toast = document.createElement("div");
+            toast.className = "custom-toast";
+            toast.innerHTML = `
+            <div style="
+                display: flex;
+                align-items: center;
+                background-color: #333;
+                color: white;
+                padding: 10px;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                margin: 10px;
+                animation: fadeInOut 4s forwards;
+            ">
+                <img src="${icon || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4fepgMlmqNvoHEYq9sOJ4SSuTwznMOKTq4g&s'}" 
+                    alt="icon" 
+                    style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;" />
+                <div>
+                    <strong style="font-size: 16px;">${title || "Thông báo"}</strong>
+                    <p style="margin: 5px 0;">${body || "Bạn có một thông báo mới."}</p>
+                </div>
+            </div>
+        `;
+
+            toast.style.position = "fixed";
+            toast.style.bottom = "20px";
+            toast.style.left = "20px";
+            toast.style.zIndex = "9999";
+
+            document.body.appendChild(toast);
+
+            // Tự động xóa toast sau 4 giây
+            setTimeout(() => {
+                toast.remove();
+            }, 4000);
+
+            // Xử lý khi người dùng nhấn vào toast
+            toast.addEventListener("click", () => {
+                window.open(payload.data?.url || "/", "_blank");
+                toast.remove();
+            });
         };
 
-        const notification = new Notification(title || "Thông báo", notificationOptions);
+        // Kiểm tra nếu là điện thoại, hiển thị Toast, nếu không thì dùng Notification API
+        if (/Android|iPhone|iPad/i.test(navigator.userAgent)) {
+            console.log("Thiết bị di động - hiển thị Toast notification");
+            showToastNotification(title, body, icon);
+        } else {
+            console.log("Máy tính - hiển thị Notification API");
+            const notification = new Notification(title || "Thông báo", {
+                body,
+                icon: icon || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4fepgMlmqNvoHEYq9sOJ4SSuTwznMOKTq4g&s",
+                requireInteraction: true // Thông báo sẽ giữ lại cho đến khi người dùng tương tác
+            });
 
-        // Xử lý khi người dùng nhấp vào thông báo
-        notification.onclick = () => {
-            window.open(payload.data?.url || "/", "_blank");
-        };
+            // Xử lý khi người dùng nhấp vào thông báo
+            notification.onclick = () => {
+                window.open(payload.data?.url || "/", "_blank");
+            };
+        }
     });
+
 };
 
 main();
