@@ -100,6 +100,7 @@ catch (Exception ex)
 
 var app = builder.Build();
 
+
 // Middleware configuration
 if (!app.Environment.IsDevelopment())
 {
@@ -108,20 +109,21 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-
-app.UseMiddleware<MACS.Middlewares.UserTokenMiddleware>();
 app.UseStaticFiles();
+app.UseMiddleware<MACS.Middlewares.UserTokenMiddleware>();
 
-app.UseCors("AllowAll");
 app.UseWhen(context => !context.Request.Path.Value.StartsWith("/firebase-messaging-sw.js"), appBuilder =>
 {
     appBuilder.UseAuthentication();
 });
+app.UseCors("AllowAll");
+
 
 app.UseSession();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",

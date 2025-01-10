@@ -49,11 +49,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.5/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.5/additional-methods.min.js"></script>
-
-    <script src="~/js/main.js" asp-append-version="true"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+    <script src="@Url.Content("~/js/main.js")" asp-append-version="true"></script>
     @* <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    @* <script src="@Url.Content("~/js/site.js")" asp-append-version="true"></script> *@
+    @* <script src="@Url.Content("~/js/firebase-messaging-sw.js")" asp-append-version="true"></script> *@
+    @* @await RenderSectionAsync("Scripts", required: false) *@
 </body>
 </html>
