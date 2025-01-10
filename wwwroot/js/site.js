@@ -1,4 +1,12 @@
-﻿
+﻿navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    .then((registration) => {
+        console.log('Service Worker đăng ký thành công:', registration.scope);
+    })
+    .catch((error) => {
+        console.error('Lỗi đăng ký Service Worker:', error);
+    });
+
+
 // Kiểm tra nền tảng iOS
 const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
@@ -7,13 +15,15 @@ const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const main = async () => {
 
     // Khởi tạo Firebase Messaging
-    const messaging = firebase.messaging();
+    //const messaging = firebase.messaging();
 
     try {
         const permission = await Notification.requestPermission();
         if (permission !== "granted") {
             console.error("Người dùng không cấp quyền thông báo.");
+            return;
         }
+
 
         const vapidKey =
             "BBE_KozcLeKHmgrx7KnFYG3V71uGgO3Jh1Bx9nctAJs6NvmgxDY-Hckvm-cw4Z23xo3eZPweX2ZmvP_rcFS8K0U";
@@ -69,6 +79,7 @@ const main = async () => {
             console.error("Thông báo không đủ thông tin để hiển thị.");
         }
     });
+
 
 };
 

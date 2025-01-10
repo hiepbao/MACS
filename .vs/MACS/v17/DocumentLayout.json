@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|c:\\users\\cubi2\\onedrive\\m\u00E1y t\u00EDnh\\lamviec\\macs\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|c:\\users\\cubi2\\onedrive\\m\u00E1y t\u00EDnh\\lamviec\\macs\\services\\uploadhistoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|solutionrelative:services\\uploadhistoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -21,10 +17,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|c:\\users\\cubi2\\onedrive\\m\u00E1y t\u00EDnh\\lamviec\\macs\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|solutionrelative:services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|c:\\users\\cubi2\\onedrive\\m\u00E1y t\u00EDnh\\lamviec\\macs\\views\\home\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|solutionrelative:views\\home\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -39,19 +31,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAADwAAAAAAAAAAAAAAGAAAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-08T08:35:32.4Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "UploadHistoryService.cs",
               "DocumentMoniker": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Services\\UploadHistoryService.cs",
               "RelativeDocumentMoniker": "Services\\UploadHistoryService.cs",
@@ -59,12 +38,12 @@
               "RelativeToolTip": "Services\\UploadHistoryService.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAABJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-08T08:35:25.884Z",
+              "WhenOpened": "2025-01-10T02:14:51.196Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "QRCodeService.cs",
               "DocumentMoniker": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Services\\QRCodeService.cs",
               "RelativeDocumentMoniker": "Services\\QRCodeService.cs",
@@ -72,12 +51,12 @@
               "RelativeToolTip": "Services\\QRCodeService.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAABJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-08T08:35:18.421Z",
+              "WhenOpened": "2025-01-10T02:14:43.493Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "HistoryCarService.cs",
               "DocumentMoniker": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Services\\HistoryCarService.cs",
               "RelativeDocumentMoniker": "Services\\HistoryCarService.cs",
@@ -85,7 +64,7 @@
               "RelativeToolTip": "Services\\HistoryCarService.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAABJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-08T08:35:10.884Z",
+              "WhenOpened": "2025-01-10T02:14:34.711Z",
               "EditorCaption": ""
             },
             {
@@ -94,7 +73,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "AuthService.cs",
               "DocumentMoniker": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Services\\AuthService.cs",
               "RelativeDocumentMoniker": "Services\\AuthService.cs",
@@ -102,20 +81,7 @@
               "RelativeToolTip": "Services\\AuthService.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAABJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-08T08:35:02.876Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Create.cshtml",
-              "DocumentMoniker": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Views\\Home\\Create.cshtml",
-              "RelativeDocumentMoniker": "Views\\Home\\Create.cshtml",
-              "ToolTip": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Views\\Home\\Create.cshtml",
-              "RelativeToolTip": "Views\\Home\\Create.cshtml",
-              "ViewState": "AQIAAKUAAAAAAAAAAAAAALMAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-01-08T08:28:43.794Z",
+              "WhenOpened": "2025-01-10T02:14:26.6Z",
               "EditorCaption": ""
             }
           ]

@@ -75,12 +75,12 @@
     <!-- jsQR -->
     <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
 
-    <!-- Firebase SDK -->
+    @* <!-- Firebase SDK --> *@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
 
-    <script>
+    @* <script>
         // Cấu hình Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDiBrRn1z-bno2P7_QNs8jmphfC_bmTPRA",
@@ -94,13 +94,15 @@
 
         // Khởi tạo Firebase
         const app = firebase.initializeApp(firebaseConfig);
-    </script>
+    </script> *@
 
     <!-- Main JS -->
     <script src="~/js/main.js" asp-append-version="true"></script>
 
     <!-- Site JS -->
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/firebase-messaging-sw.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 

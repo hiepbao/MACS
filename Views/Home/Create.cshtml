@@ -82,32 +82,41 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-12 ">
+                                <div class="col-12">
                                     <label class="control-label">Phân công cho</label>
+                                    <input type="text" id="search-group-user" class="form-control mb-2" placeholder="Nhập tên nhóm hoặc người dùng..." />
                                     <div class="border p-3 rounded bg-white overflow-auto" style="max-height: 150px;">
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="assign-all" />
-                                            <label class="form-check-label" for="assign-all">Phân công tất cả</label>
+                                            <input type="checkbox" class="form-check-input" id="assign-all" value="" />
+                                            <label class="form-check-label" for="assign-all">Gửi tất cả</label>
                                         </div>
-                                        @foreach (var group in (IEnumerable<SelectListItem>)ViewBag.GroupList)
-                                        {
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" id="group-@group.Value" name="GroupId" value="@group.Value" />
-                                                <label class="form-check-label" for="group-@group.Value">@group.Text</label>
-                                            </div>
-                                        }
-                                        @foreach (var user in (IEnumerable<SelectListItem>)ViewBag.UserList)
-                                        {
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input user-checkbox" id="user-@user.Value" name="UserIds" value="@user.Value" />
-                                                <label class="form-check-label" for="user-@user.Value">@user.Text</label>
-                                            </div>
-                                        }
-                                        
+
+                                        <label>Nhóm:</label>
+                                        <div id="group-list">
+                                            @foreach (var group in (IEnumerable<SelectListItem>)ViewBag.GroupList)
+                                            {
+                                                <div class="form-check group-item">
+                                                    <input type="checkbox" class="form-check-input" id="group-@group.Value" name="GroupId" value="@group.Value" />
+                                                    <label class="form-check-label" for="group-@group.Value">@group.Text</label>
+                                                </div>
+                                            }
+                                        </div>
+
+                                        <label>Người dùng:</label>
+                                        <div id="user-list">
+                                            @foreach (var user in (IEnumerable<SelectListItem>)ViewBag.UserList)
+                                            {
+                                                <div class="form-check user-item">
+                                                    <input type="checkbox" class="form-check-input" id="user-@user.Value" name="UserIds" value="@user.Value" />
+                                                    <label class="form-check-label" for="user-@user.Value">@user.Text</label>
+                                                </div>
+                                            }
+                                        </div>
                                     </div>
                                 </div>
-
                             </div>
+
+
                             <div class="row">
                                 <div class="form-group col-6 mb-3 ">
                                     <label asp-for="IsCarried" class="control-label text-danger"></label>
@@ -133,16 +142,23 @@
 
     </div>
     <!-- Kết quả tải lên -->
-    @if (ViewBag.Results != null)
+    @if (TempData["SuccessMessage"] != null)
     {
-        <div class="custom-alert">
-            <h6>Kết quả:</h6>
-            <ul>
-                @foreach (var result in (List<string>)ViewBag.Results)
-                {
-                    <li>@result</li>
-                }
-            </ul>
+        <script>
+            alert('@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(TempData["SuccessMessage"]?.ToString() ?? "")');
+        </script>
+        <div class="custom-alert success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+            alert('@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(TempData["ErrorMessage"]?.ToString() ?? "")');
+        </script>
+        <div class="custom-alert error">
+            @TempData["ErrorMessage"]
         </div>
     }
 </div>
@@ -280,6 +296,24 @@
     // Sự kiện đóng modal để dừng camera
     qrCodeModal.addEventListener('hidden.bs.modal', () => {
         stopCamera();
+    });
+
+    document.getElementById('search-group-user').addEventListener('input', function () {
+        var searchValue = this.value.toLowerCase().trim();
+
+        // Lọc nhóm
+        var groupItems = document.querySelectorAll('.group-item');
+        groupItems.forEach(function (item) {
+            var groupName = item.querySelector('label').innerText.toLowerCase();
+            item.style.display = groupName.includes(searchValue) ? '' : 'none';  // Hiển thị hoặc ẩn nhóm
+        });
+
+        // Lọc người dùng
+        var userItems = document.querySelectorAll('.user-item');
+        userItems.forEach(function (item) {
+            var userName = item.querySelector('label').innerText.toLowerCase();
+            item.style.display = userName.includes(searchValue) ? '' : 'none';  // Hiển thị hoặc ẩn người dùng
+        });
     });
 
 </script>

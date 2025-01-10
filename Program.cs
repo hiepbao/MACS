@@ -108,11 +108,16 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+
 
 app.UseMiddleware<MACS.Middlewares.UserTokenMiddleware>();
+app.UseStaticFiles();
 
 app.UseCors("AllowAll");
+app.UseWhen(context => !context.Request.Path.Value.StartsWith("/firebase-messaging-sw.js"), appBuilder =>
+{
+    appBuilder.UseAuthentication();
+});
 
 app.UseSession();
 app.UseRouting();

@@ -76,13 +76,13 @@ namespace MACS.Controllers
             {
                 Value = u.AccountId.ToString(),
                 Text = u.FullName
-            }).ToList();
+            }).ToList() ?? new List<SelectListItem>(); 
 
             ViewBag.GroupList = userGroups.Select(g => new SelectListItem
             {
                 Value = g.GroupId.ToString(),
                 Text = g.GroupName
-            }).ToList();
+            }).ToList() ?? new List<SelectListItem>();
 
             return View(new HistoryCar
             {
@@ -98,16 +98,28 @@ namespace MACS.Controllers
         {
             if (!ModelState.IsValid)
             {
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    Console.WriteLine($"Model Error: {error.ErrorMessage}");
-                }
+                ViewBag.UserList = (await _historyCarService.GetAllUsersAsync())
+                        .Select(u => new SelectListItem { Value = u.AccountId.ToString(), Text = u.FullName })
+                        .ToList();
+
+                ViewBag.GroupList = (await _historyCarService.GetGroupsUsersAsync())
+                                    .Select(g => new SelectListItem { Value = g.GroupId.ToString(), Text = g.GroupName })
+                                    .ToList();
                 return View(historyCar);
             }
 
-
             if (await _historyCarService.CheckCardHasCarInAsync(historyCar.CardNo))
-                return SetErrorMessageAndRedirect("Thẻ này đã có xe vào.", "Index");
+            {
+                ViewBag.UserList = (await _historyCarService.GetAllUsersAsync())
+                        .Select(u => new SelectListItem { Value = u.AccountId.ToString(), Text = u.FullName })
+                        .ToList();
+
+                ViewBag.GroupList = (await _historyCarService.GetGroupsUsersAsync())
+                                    .Select(g => new SelectListItem { Value = g.GroupId.ToString(), Text = g.GroupName })
+                                    .ToList();
+                TempData["ErrorMessage"] = "Thẻ này đã có xe vào";
+                return View(historyCar);
+            }
 
             historyCar.GetInDate = GetCurrentTime();
             historyCar.IsGetIn = true;
