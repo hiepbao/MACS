@@ -1,8 +1,8 @@
 ﻿// Import Firebase libraries
-//importScripts("https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js");
-//importScripts("https://www.gstatic.com/firebasejs/9.15.0/firebase-messaging-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/9.15.0/firebase-messaging-compat.js");
 
-// Cấu hình Firebase
+// Cấu hình Firebase (không nên để thông tin nhạy cảm trong mã public nếu có thể)
 firebase.initializeApp({
     apiKey: "AIzaSyDiBrRn1z-bno2P7_QNs8jmphfC_bmTPRA",
     authDomain: "macs-981ec.firebaseapp.com",
@@ -20,7 +20,7 @@ messaging.onBackgroundMessage((payload) => {
     const { title, body, icon } = payload.notification || {};
 
     self.registration.showNotification(title || "Thông báo", {
-        body: body ,
+        body: body || "Bạn có một thông báo mới!",
         icon: icon || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4fepgMlmqNvoHEYq9sOJ4SSuTwznMOKTq4g&s",
         data: { url: payload.data?.url || "/" }
     });

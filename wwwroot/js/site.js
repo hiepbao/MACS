@@ -1,39 +1,56 @@
-﻿navigator.serviceWorker.register('/firebase-messaging-sw.js')
-    .then((registration) => {
-        console.log('Service Worker đăng ký thành công:', registration.scope);
-    })
-    .catch((error) => {
-        console.error('Lỗi đăng ký Service Worker:', error);
-    });
+﻿// Cấu hình Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyDiBrRn1z-bno2P7_QNs8jmphfC_bmTPRA",
+    authDomain: "macs-981ec.firebaseapp.com",
+    projectId: "macs-981ec",
+    storageBucket: "macs-981ec.appspot.com",
+    messagingSenderId: "740480638931",
+    appId: "1:740480638931:web:b3e663ef27e7b7ecc89926",
+    vapidKey: "BBE_KozcLeKHmgrx7KnFYG3V71uGgO3Jh1Bx9nctAJs6NvmgxDY-Hckvm-cw4Z23xo3eZPweX2ZmvP_rcFS8K0U"
+};
 
+// Khởi tạo Firebase app
+const app = firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging();
 
-// Kiểm tra nền tảng iOS
+// Đăng ký Service Worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+        .then((registration) => {
+            console.log('Service Worker đăng ký thành công:', registration.scope);
+            messaging.useServiceWorker(registration);
+        })
+        .catch((error) => {
+            console.error('Lỗi đăng ký Service Worker:', error);
+        });
+} else {
+    console.error('Trình duyệt không hỗ trợ Service Worker.');
+}
+
+// Kiểm tra nền tảng iOS hoặc Safari
 const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
 // Hàm chính
 const main = async () => {
-
-    // Khởi tạo Firebase Messaging
-    //const messaging = firebase.messaging();
-
     try {
+        // Yêu cầu quyền thông báo
         const permission = await Notification.requestPermission();
         if (permission !== "granted") {
-            console.error("Người dùng không cấp quyền thông báo.");
+            console.warn("Người dùng không cấp quyền thông báo.");
             return;
         }
 
-
-        const vapidKey =
-            "BBE_KozcLeKHmgrx7KnFYG3V71uGgO3Jh1Bx9nctAJs6NvmgxDY-Hckvm-cw4Z23xo3eZPweX2ZmvP_rcFS8K0U";
-
         // Lấy FCM token
-        const token = await messaging.getToken({ vapidKey });
+        const token = await messaging.getToken({
+            vapidKey: firebaseConfig.vapidKey
+        });
         if (!token) {
             console.error("Không thể lấy FCM token.");
             return;
         }
+
+        console.log("FCM Token:", token);
 
         // Gửi token lên server
         const response = await fetch("/Home/SaveToken", {
@@ -58,29 +75,26 @@ const main = async () => {
 
         const { title, body, icon } = payload.notification || {};
 
-        // Kiểm tra quyền thông báo
         if (Notification.permission !== "granted") {
-            console.error("Quyền thông báo chưa được cấp.");
+            console.warn("Quyền thông báo chưa được cấp.");
+            return;
         }
-        // Phát âm thanh thông báo
-        //const notificationSound = new Audio("https://notificationsounds.com/notification-sounds/ill-make-it-possible-notification/download/mp3"); // Đường dẫn tới file âm thanh
-        //notificationSound.play().catch((err) => {
-        //    console.error("Lỗi khi phát âm thanh:", err);
-        //});
 
-        // Hiển thị thông báo
-        if (title && body) {
-            new Notification(title, {
-                body,
-                icon: icon || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4fepgMlmqNvoHEYq9sOJ4SSuTwznMOKTq4g&s", // Thêm biểu tượng mặc định nếu không có
-                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPiOEI7-694Ef1ym2Uw7HquUBQbyHUfU2N7Q&s", // Thêm hình ảnh lớn
-            });
-        } else {
-            console.error("Thông báo không đủ thông tin để hiển thị.");
-        }
+        // Hiển thị thông báo với âm thanh
+        const notificationOptions = {
+            body,
+            icon: icon || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4fepgMlmqNvoHEYq9sOJ4SSuTwznMOKTq4g&s",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPiOEI7-694Ef1ym2Uw7HquUBQbyHUfU2N7Q&s",
+            //requireInteraction: true // Thông báo sẽ giữ lại cho đến khi người dùng tương tác
+        };
+
+        const notification = new Notification(title || "Thông báo", notificationOptions);
+
+        // Xử lý khi người dùng nhấp vào thông báo
+        notification.onclick = () => {
+            window.open(payload.data?.url || "/", "_blank");
+        };
     });
-
-
 };
 
 main();
