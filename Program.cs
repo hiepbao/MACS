@@ -19,11 +19,13 @@ builder.Services.AddHttpClient<QRCodeService>();
 builder.Services.AddHttpClient<AuthService>();
 builder.Services.AddHttpClient<HistoryCarService>();
 builder.Services.AddHttpClient<HomeController>();
+builder.Services.AddHttpClient<TokenService>();  
+
 
 builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiBaseUrl"));
 builder.Services.Configure<FirebaseConfig>(builder.Configuration.GetSection("FirebaseConfig"));
 builder.Services.AddScoped<NotificationService>();
-
+builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

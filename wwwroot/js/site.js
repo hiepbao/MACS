@@ -134,7 +134,7 @@ const main = async () => {
             const notification = new Notification(title || "Thông báo", {
                 body,
                 icon: icon || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4fepgMlmqNvoHEYq9sOJ4SSuTwznMOKTq4g&s",
-                requireInteraction: true // Thông báo sẽ giữ lại cho đến khi người dùng tương tác
+                //requireInteraction: true // Thông báo sẽ giữ lại cho đến khi người dùng tương tác
             });
 
             // Xử lý khi người dùng nhấp vào thông báo

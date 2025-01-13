@@ -16,15 +16,15 @@ namespace MACS.Controllers
     {
         private readonly QRCodeService _qrCodeService;
         private readonly HistoryCarService _historyCarService;
-        private readonly AppDbContext _dbContext;
         private readonly NotificationService _notificationService;
+        private readonly TokenService _tokenService;
 
-        public HomeController(QRCodeService qrCodeService, HistoryCarService historyCarService, AppDbContext dbContext, NotificationService notificationService)
+        public HomeController(QRCodeService qrCodeService, HistoryCarService historyCarService, NotificationService notificationService, TokenService tokenService)
         {
             _qrCodeService = qrCodeService;
             _historyCarService = historyCarService;
-            _dbContext = dbContext;
             _notificationService = notificationService;
+            _tokenService = tokenService;
         }
 
         private DateTime GetCurrentTime()
@@ -149,7 +149,7 @@ namespace MACS.Controllers
                         }
                         else
                         {
-                            await _notificationService.NotifyUserTokenAsync(null, "Xe vào", $"Xe mới {historyCar.LicensePlate} vừa vào hệ thống.", clickActionUrl); 
+                            await _notificationService.NotifyUserTokenAsync(0, "Xe vào", $"Xe mới {historyCar.LicensePlate} vừa vào hệ thống.", clickActionUrl); 
                         }
                     }
                     else 
@@ -219,33 +219,32 @@ namespace MACS.Controllers
             ModelState.AddModelError("", "Không thể cập nhật dữ liệu. Vui lòng thử lại.");
             return View(historyCar);
         }
-
         [HttpPost]
-        public IActionResult SaveToken([FromBody] TokenRequest model)
+        public async Task<IActionResult> SaveToken([FromBody] TokenRequest model)
         {
             try
             {
                 var userInfo = GetUserInfoFromToken();
-                var existingToken = _dbContext.TokenRequest.FirstOrDefault(t => t.Id == userInfo.AccountId);
+                var existingToken = await _tokenService.GetTokenFMCByIdAsync(userInfo.AccountId);
 
                 if (existingToken != null)
                 {
                     // Nếu token đã tồn tại, cập nhật token thay vì thêm mới
                     existingToken.Token = model.Token;
-                    _dbContext.TokenRequest.Update(existingToken);
-                    
+                    existingToken.Role = userInfo.Role;
+                    await _tokenService.UpdateTokenFMCAsync(existingToken);
                 }
                 else
                 {
                     // Nếu chưa tồn tại, thêm mới
-                    _dbContext.TokenRequest.Add(new TokenRequest
+                    var newTokenRequest = new TokenRequest
                     {
                         Id = userInfo.AccountId,  // AccountId làm khóa chính
                         Token = model.Token,
                         Role = userInfo.Role,
-                    });
+                    };
+                    await _tokenService.CreateTokenFMCAsync(newTokenRequest);
                 }
-                _dbContext.SaveChanges();
 
                 return Ok("Token saved successfully.");
             }
@@ -254,6 +253,7 @@ namespace MACS.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
 
         [HttpPost]
         public async Task<IActionResult> ScanQR(IFormFile qrImage)

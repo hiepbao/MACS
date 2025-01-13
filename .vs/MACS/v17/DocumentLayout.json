@@ -3,24 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|c:\\users\\cubi2\\onedrive\\m\u00E1y t\u00EDnh\\lamviec\\macs\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|solutionrelative:wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|c:\\users\\cubi2\\onedrive\\m\u00E1y t\u00EDnh\\lamviec\\macs\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|c:\\users\\cubi2\\onedrive\\m\u00E1y t\u00EDnh\\lamviec\\macs\\services\\uploadhistoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|solutionrelative:services\\uploadhistoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|c:\\users\\cubi2\\onedrive\\m\u00E1y t\u00EDnh\\lamviec\\macs\\services\\qrcodeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|solutionrelative:services\\qrcodeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|c:\\users\\cubi2\\onedrive\\m\u00E1y t\u00EDnh\\lamviec\\macs\\services\\historycarservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5D12EF3D-20FE-4741-9D80-71521660EB20}|MACS.csproj|solutionrelative:services\\historycarservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,73 +14,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "site.js",
-              "DocumentMoniker": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\wwwroot\\js\\site.js",
-              "RelativeDocumentMoniker": "wwwroot\\js\\site.js",
-              "ToolTip": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\wwwroot\\js\\site.js",
-              "RelativeToolTip": "wwwroot\\js\\site.js",
-              "ViewState": "AQIAAEkAAAAAAAAAAAAmwJEAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-01-10T04:08:55.939Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAB4AAAAAAAAAAAAAAEAAAAADAAAA",
+              "ViewState": "AQIAAEgAAAAAAAAAAAAAAGIAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-10T02:26:36.811Z",
+              "WhenOpened": "2025-01-13T08:19:01.705Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "UploadHistoryService.cs",
-              "DocumentMoniker": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Services\\UploadHistoryService.cs",
-              "RelativeDocumentMoniker": "Services\\UploadHistoryService.cs",
-              "ToolTip": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Services\\UploadHistoryService.cs",
-              "RelativeToolTip": "Services\\UploadHistoryService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAABJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-10T02:14:51.196Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "QRCodeService.cs",
-              "DocumentMoniker": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Services\\QRCodeService.cs",
-              "RelativeDocumentMoniker": "Services\\QRCodeService.cs",
-              "ToolTip": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Services\\QRCodeService.cs",
-              "RelativeToolTip": "Services\\QRCodeService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAABJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-10T02:14:43.493Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "HistoryCarService.cs",
-              "DocumentMoniker": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Services\\HistoryCarService.cs",
-              "RelativeDocumentMoniker": "Services\\HistoryCarService.cs",
-              "ToolTip": "C:\\Users\\cubi2\\OneDrive\\M\u00E1y t\u00EDnh\\lamviec\\MACS\\Services\\HistoryCarService.cs",
-              "RelativeToolTip": "Services\\HistoryCarService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAABJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-10T02:14:34.711Z"
             }
           ]
         }

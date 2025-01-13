@@ -6,44 +6,29 @@ namespace MACS.Services
 {
     public class NotificationService
     {
-        private readonly AppDbContext _dbContext;
+        private readonly TokenService _tokenService;
 
-        public NotificationService(AppDbContext dbContext)
+        public NotificationService(TokenService tokenService)
         {
-            _dbContext = dbContext;
+            _tokenService = tokenService;
         }
         public async Task NotifyUserTokenAsync(int? userId, string title, string message, string clickActionUrl)
         {
-            List<string> tokens;
+            List<string> tokens = new List<string>();
 
             if (userId == null || userId == 0)  // Nếu không chọn người dùng
             {
-                #nullable disable
-                tokens = await _dbContext.TokenRequest
-                    //.Where(t => t.Role.ToLower() == "store")
-                    .Select(t => t.Token)
-                    .Distinct()
-                    .ToListAsync();
-                #nullable enable
-
+                tokens = await _tokenService.GetAllTokensAsync();
             }
             else
             {
-                var userToken = await _dbContext.TokenRequest
-                    .Where(t => t.Id == userId)
-                    .Select(t => t.Token)
-                    .FirstOrDefaultAsync();  // Lấy token của người dùng được chọn
-
-                tokens = !string.IsNullOrEmpty(userToken) ? new List<string> { userToken } : new List<string>();
+                var userToken = await _tokenService.GetUserTokenByIdAsync(userId.Value);
+                tokens.Add(userToken);
             }
 
-            if (tokens.Count == 0)
-            {
-                Console.WriteLine("No tokens found to send notifications.");
-                return;
-            }
+            Console.WriteLine($"Total tokens to send notification: {tokens.Count}");
 
-            foreach (var token in tokens)
+            var tasks = tokens.Select(async token =>
             {
                 var messageToSend = new FirebaseAdmin.Messaging.Message()
                 {
@@ -57,24 +42,25 @@ namespace MACS.Services
                         { "url", clickActionUrl }  // Gửi URL trong dữ liệu tùy chỉnh
                     },
                     Token = token
-
                 };
 
                 try
                 {
                     string response = await FirebaseAdmin.Messaging.FirebaseMessaging.DefaultInstance.SendAsync(messageToSend);
-                    Console.WriteLine($"Successfully sent message: {response}");
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error sending message to token {token}: {ex.Message}");
                 }
-            }
+            });
+
+            await Task.WhenAll(tasks);
         }
+
     }
 
-        
-    
+
+
 
     public class FirebaseConfig
     {
