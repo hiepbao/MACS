@@ -1,0 +1,191 @@
+﻿@using MACS.Models;
+@* @model IEnumerable<MACS.Models.VehicleLog>; *@
+@model dynamic;
+@{
+    ViewData["Title"] = "Task Page";
+}
+
+<!-- header Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light rounded p-4">
+        <p class="h2 text-center">Danh sách Công việc</p>
+        
+        <div class="">
+            <a href="/TaskAssignment/Create" class="btn btn-primary m-2" id="createTaskButton">
+                Thêm công việc
+            </a>
+        </div>
+    </div>
+
+</div>
+<!-- header End -->
+<!-- body Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light rounded h-100 p-4">
+        <div class="mb-2">
+            <ul class="nav nav-tabs" id="taskTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="all-tasks-tab" data-bs-toggle="tab" data-bs-target="#all-tasks" type="button" role="tab" aria-controls="all-tasks" aria-selected="true">
+                        Tất cả công việc đã phân công
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="user-tasks-tab" data-bs-toggle="tab" data-bs-target="#user-tasks" type="button" role="tab" aria-controls="user-tasks" aria-selected="false">
+                        Công việc của bạn
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="tab-content pt-3" id="nav-tabContent">
+            <!-- detai tab1 Start -->
+            <div class="tab-pane fade show active" id="all-tasks" role="tabpanel" aria-labelledby="all-tasks-tab">
+                <div class="table-responsive mt-3 row">
+                    <table class="table table-bordered">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên công việc</th>
+                                <th>Nhiệm vụ</th>
+                                <th>Người được phân công</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày hết hạn</th>
+                                <th>Phân công bởi</th>
+                                <th>Ngày phân công</th>
+                                <th>Cập nhập bởi</th>
+                                <th>Ngày cập nhập</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.AllTaskGroups != null)
+                            {
+                                int index = 1;
+                                foreach (var group in Model.AllTaskGroups)
+                                {
+                                    <tr>
+                                        <td>@index</td>
+                                        <td>@group.GroupName</td>
+                                        <td>
+                                                <ul>
+                                                    @foreach (var task in group.Tasks)
+                                                    {
+                                                        <li>@task.TaskName</li>
+                                                    }
+                                                </ul>
+                                        </td>
+                                        <td>@group.AssignedTo</td>
+                                        <td>
+                                                <ul>
+                                                    @foreach (var task in group.Tasks)
+                                                    {
+                                                        <li>@task.Status</li>
+                                                    }
+                                                </ul>
+                                                      
+                                        </td>
+                                        <td>
+                                                <ul>
+                                                    @foreach (var task in group.Tasks)
+                                                    {
+                                                    <li>@task.DueDate.ToString("dd/MM/yyyy")</li>
+                                                    }
+                                                </ul>
+                                        </td>
+                                        <td>@group.AssignedBy</td>
+                                        <td>@group.AssignedDate.ToString("dd/MM/yyyy")</td>
+                                        <td>@group.UpdateBy</td>
+                                        <td>@group.UpdateDate.ToString("dd/MM/yyyy")</td>
+                                    </tr>
+                                    index++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="10" class="text-center">Không có dữ liệu để hiển thị.</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <!-- detai tab1 End -->
+            <!-- detai tab2 Start -->
+            <div class="tab-pane fade" id="user-tasks" role="tabpanel" aria-labelledby="user-tasks-tab">
+                <div class="table-responsive mt-3">
+                    @if (Model.UserTaskGroup != null )
+                    {
+                        <table class="table table-bordered mt-3">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên nhiệm vụ</th>
+                                    <th>Thông tin</th>
+                                    <th>Tình trạng</th>
+                                    <th>Độ ưu tiên</th>
+                                    <th>Ngày hết hạn</th>
+                                    <th>Cập nhập</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.UserTaskGroup.Count; i++)
+                                {
+                                    var task = Model.UserTaskGroup[i];
+                                    <tr>
+                                        <td>@(i + 1)</td>
+                                        <td>@task.TaskName</td>
+                                        <td>@task.Description</td>
+                                        <td>@task.Status</td>
+                                        <td>@task.Priority</td>
+                                        <td>@task.DueDate.ToString("dd/MM/yyyy")</td>
+                                        <td>
+                                            <form asp-controller="TaskAssignment" asp-action="Edit" method="post" class="d-inline">
+                                                <input type="hidden" name="taskId" value="@task.TaskId" />
+                                                <input type="hidden" name="newStatus" value="@task.Status" />
+                                                <button type="submit" class="btn btn-sm btn-primary">
+                                                    <i class="fa fa-edit"></i> Cập nhật
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="text-center text-muted mt-3">Bạn chưa có công việc nào được phân công.</p>
+                    }
+
+                </div>
+            </div>
+            <!-- detai tab2 end -->
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+            alert('@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(TempData["SuccessMessage"]?.ToString() ?? "")');
+        </script>
+        <div class="custom-alert success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+            alert('@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(TempData["ErrorMessage"]?.ToString() ?? "")');
+        </script>
+        <div class="custom-alert error">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+
+</div>
+<!-- body End -->
+

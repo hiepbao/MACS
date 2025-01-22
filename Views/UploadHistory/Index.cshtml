@@ -1,4 +1,4 @@
-﻿@model List<UploadHistoryRecord>
+﻿@model List<FileModel>
 
 @{
     ViewData["Title"] = "Upload History";
@@ -26,29 +26,38 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var record in Model)
+                            @if (Model != null && Model.Any())
+                            {
+                                @foreach (var record in Model)
+                                {
+                                    <tr>
+                                        <td>@record.FullName</td>
+                                        <td>@record.FileName</td>
+                                        <td>@record.FileSizeInKB</td>
+                                        <td>@record.CountFile</td>
+                                        <td>@record.Date.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                        <td>
+                                            <ul>
+                                                @if (record.SavedFileList != null && record.SavedFileList.Any())
+                                                {
+                                                    @foreach (var file in record.SavedFileList)
+                                                    {
+                                                        <li>@file</li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li>Không có file nào</li>
+                                                }
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
                             {
                                 <tr>
-                                    <td>@record.FullName</td>
-                                    <td>@record.FileName</td>
-                                    <td>@record.FileSizeKB</td>
-                                    <td>@record.FileCount</td>
-                                    <td>@record.UploadTime</td>
-                                    <td>
-                                        <ul>
-                                            @if (record.FileList != null && record.FileList.Any())
-                                            {
-                                                @foreach (var file in record.FileList)
-                                                {
-                                                    <li>@file</li>
-                                                }
-                                            }
-                                            else
-                                            {
-                                                <li>Không có file nào</li>
-                                            }
-                                        </ul>
-                                    </td>
+                                    <td colspan="6" class="text-center">Chưa có dữ liệu tải lên</td>
                                 </tr>
                             }
                         </tbody>

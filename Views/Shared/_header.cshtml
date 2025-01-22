@@ -1,6 +1,8 @@
 ﻿@{
     var username = ViewContext.HttpContext.Items["Username"]?.ToString() ?? "Guest";
+    var role = ViewContext.HttpContext.Items["Role"]?.ToString() ?? "Guest";
 }
+
         
 <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -24,13 +26,14 @@
                     </div>
                     <div class="ms-3">
                         <h6 class="mb-0">@username</h6>
-                        <span>Admin</span>
+                        <span>@role</span>
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
                     <a asp-controller="Home" asp-action="Index" class="nav-item nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")"><i class="fa fa-home me-2"></i>Hệ thống</a>
                     <a asp-controller="Upload" asp-action="Index" class="nav-item nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Upload" ? "active" : "")"><i class="fa fa-upload me-2"></i>Upload file</a>
                     <a asp-controller="UploadHistory" asp-action="Index" class="nav-item nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "UploadHistory" ? "active" : "")"><i class="fa fa-history me-2"></i>Lịch sử Upload</a>
+            <a asp-controller="TaskAssignment" asp-action="Index" class="nav-item nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "TaskAssignment" ? "active" : "")"><i class="fa fa-tasks me-2"></i>Phân công việc</a>
                     <a href="widget.html" class="nav-item nav-link"><i class="fa fa-users me-2"></i>Nhân sự</a>
                     <a href="form.html" class="nav-item nav-link"><i class="fa fa-shield-alt me-2"></i>AN-AT</a>
                     <a href="table.html" class="nav-item nav-link"><i class="fa fa-box-open me-2"></i>Hàng nhập khẩu</a>

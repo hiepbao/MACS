@@ -1,7 +1,6 @@
 ﻿using MACS.Models;
 using MACS.Services;
-using MACSAPI.Data;
-using MACSAPI.Models;
+using MACS.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -229,7 +228,8 @@ namespace MACS.Controllers
 
                 if (existingToken != null)
                 {
-                    // Nếu token đã tồn tại, cập nhật token thay vì thêm mới
+                    // Nếu token đã tồn tại, cập nhật token 
+                    existingToken.Id = userInfo.AccountId;
                     existingToken.Token = model.Token;
                     existingToken.Role = userInfo.Role;
                     await _tokenService.UpdateTokenFMCAsync(existingToken);
@@ -239,7 +239,7 @@ namespace MACS.Controllers
                     // Nếu chưa tồn tại, thêm mới
                     var newTokenRequest = new TokenRequest
                     {
-                        Id = userInfo.AccountId,  // AccountId làm khóa chính
+                        Id = userInfo.AccountId, 
                         Token = model.Token,
                         Role = userInfo.Role,
                     };

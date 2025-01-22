@@ -7612,11 +7612,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\cubi2\\OneDrive\\Máy tính\\lamviec\\MACS\\MACS.csproj",
+      "projectUniqueName": "C:\\Users\\cubi2\\OneDrive\\Máy tính\\lamviec\\MACSFE\\MACS.csproj",
       "projectName": "MACS",
-      "projectPath": "C:\\Users\\cubi2\\OneDrive\\Máy tính\\lamviec\\MACS\\MACS.csproj",
+      "projectPath": "C:\\Users\\cubi2\\OneDrive\\Máy tính\\lamviec\\MACSFE\\MACS.csproj",
       "packagesPath": "C:\\Users\\cubi2\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\cubi2\\OneDrive\\Máy tính\\lamviec\\MACS\\obj\\",
+      "outputPath": "C:\\Users\\cubi2\\OneDrive\\Máy tính\\lamviec\\MACSFE\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

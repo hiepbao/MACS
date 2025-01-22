@@ -17,75 +17,83 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = MACS
 build_property.RootNamespace = MACS
-build_property.ProjectDir = C:\Users\cubi2\OneDrive\Máy tính\lamviec\MACS\
+build_property.ProjectDir = C:\Users\cubi2\OneDrive\Máy tính\lamviec\MACSFE\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\cubi2\OneDrive\Máy tính\lamviec\MACS
+build_property.MSBuildProjectDirectory = C:\Users\cubi2\OneDrive\Máy tính\lamviec\MACSFE
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACS/Views/Home/Create.cshtml]
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/Home/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACS/Views/Home/Edit.cshtml]
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/Home/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACS/Views/Home/Index.cshtml]
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACS/Views/Login/Index.cshtml]
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/Login/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACS/Views/Shared/Error.cshtml]
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACS/Views/Shared/_footer.cshtml]
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/Shared/_footer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9mb290ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACS/Views/Shared/_header.cshtml]
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/Shared/_header.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9oZWFkZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACS/Views/Shared/_layoutAuth.cshtml]
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/Shared/_layoutAuth.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9sYXlvdXRBdXRoLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACS/Views/Shared/_navbar.cshtml]
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/Shared/_navbar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9uYXZiYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACS/Views/Shared/_UserHeader.cshtml]
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/Shared/_UserHeader.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Vc2VySGVhZGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACS/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACS/Views/UploadHistory/Index.cshtml]
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/TaskAssignment/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFza0Fzc2lnbm1lbnRcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/TaskAssignment/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFza0Fzc2lnbm1lbnRcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/UploadHistory/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXBsb2FkSGlzdG9yeVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACS/Views/Upload/Index.cshtml]
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/Upload/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXBsb2FkXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACS/Views/_ViewImports.cshtml]
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACS/Views/_ViewStart.cshtml]
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACS/Views/Shared/_Layout.cshtml]
+[C:/Users/cubi2/OneDrive/Máy tính/lamviec/MACSFE/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-5eynntzxfm

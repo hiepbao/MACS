@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "cqnlCRmfrh5FAKbSxLZDV0nSNJIP/Lq5lJ6jPTsM3pP2OvRF9fFrLRbAeuH4JRCpXtxKz95HOjsHcDqsNvIBOA==",
+  "dgSpecHash": "7DXaz1OpCra/n7k3eKdIKBk7jczQ30J78dtDV+DgmHdM1YnwsE6CASAbHC5IT5F9oCvC7kb3JoqFD4I+GAS3LA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\cubi2\\OneDrive\\Máy tính\\lamviec\\MACS\\MACS.csproj",
+  "projectFilePath": "C:\\Users\\cubi2\\OneDrive\\Máy tính\\lamviec\\MACSFE\\MACS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\cubi2\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\cubi2\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

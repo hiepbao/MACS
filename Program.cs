@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MACS.Data;
 using MACS.Controllers;
-using MACSAPI.Data;
 using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,14 +17,15 @@ builder.Services.AddHttpClient<UploadHistoryService>();
 builder.Services.AddHttpClient<QRCodeService>();
 builder.Services.AddHttpClient<AuthService>();
 builder.Services.AddHttpClient<HistoryCarService>();
-builder.Services.AddHttpClient<HomeController>();
-builder.Services.AddHttpClient<TokenService>();  
+builder.Services.AddHttpClient<TokenService>();
+builder.Services.AddHttpClient<TaskAssignmentService>();
 
 
 builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiBaseUrl"));
 builder.Services.Configure<FirebaseConfig>(builder.Configuration.GetSection("FirebaseConfig"));
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<TaskAssignmentService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

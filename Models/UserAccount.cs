@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MACSAPI.Models
+namespace MACS.Models
 {
     // Models/UserAccount.cs
     public class UserAccount

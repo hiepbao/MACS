@@ -13,14 +13,14 @@ namespace MACS.Services
             _httpClient = httpClient;
         }
 
-        public async Task<List<UploadHistoryRecord>> GetUploadHistoryAsync()
+        public async Task<List<FileModel>> GetUploadHistoryAsync()
         {
             var apiUrl = $"{ApiBaseUrl}/api/File/readUploadHistory"; // Đường dẫn API
 
             // Gọi API và nhận dữ liệu JSON
-            var result = await _httpClient.GetFromJsonAsync<List<UploadHistoryRecord>>(apiUrl);
+            var result = await _httpClient.GetFromJsonAsync<List<FileModel>>(apiUrl);
 
-            return result ?? new List<UploadHistoryRecord>(); // Trả về danh sách (hoặc danh sách rỗng nếu null)
+            return result ?? new List<FileModel>(); // Trả về danh sách (hoặc danh sách rỗng nếu null)
         }
 
         // Phương thức upload file

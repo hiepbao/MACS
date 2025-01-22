@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Xml;
 
-namespace MACSAPI.Data
+namespace MACS.Data
 {
     public class AppDbContext : DbContext
     {

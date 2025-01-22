@@ -1,4 +1,4 @@
-﻿namespace MACSAPI.Models
+﻿namespace MACS.Models
 {
     public class UserGroup
     {

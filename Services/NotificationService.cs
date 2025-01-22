@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using MACSAPI.Data;
+using MACS.Data;
 
 namespace MACS.Services
 {
@@ -58,9 +58,6 @@ namespace MACS.Services
         }
 
     }
-
-
-
 
     public class FirebaseConfig
     {

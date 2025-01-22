@@ -45,15 +45,13 @@ namespace MACS.Middlewares
                     var handler = new JwtSecurityTokenHandler();
                     var jwtToken = handler.ReadJwtToken(token);
 
-                    Console.WriteLine(jwtToken);
-
                     // Kiểm tra thông tin cơ bản (bạn có thể thêm các kiểm tra chữ ký nếu cần)
                     var username = jwtToken.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value ?? "Guest";
-                    //var role = jwtToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value ?? "User";
+                    var role = jwtToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value ?? "User";
 
                     // Lưu thông tin vào HttpContext.Items
                     context.Items["Username"] = username;
-                    //context.Items["Role"] = role;
+                    context.Items["Role"] = role;
                 }
                 catch
                 {

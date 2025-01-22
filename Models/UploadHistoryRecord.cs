@@ -1,14 +1,20 @@
 ﻿namespace MACS.Models
 {
-    public class UploadHistoryRecord
+    public class FileModel
     {
-        public string? Username { get; set; }
-        public string? FullName { get; set; }
-        public string? FileName { get; set; }
-        public string? FileSizeKB { get; set; }
-        public string? FileCount { get; set; }
-        public string? UploadTime { get; set; }
-        public List<string>? FileList { get; set; }
+        public Guid Id { get; set; }
+        public string Username { get; set; }
+        public string FullName { get; set; }
+        public string FileName { get; set; }
+        public string FileSizeInKB { get; set; }
+        public int CountFile { get; set; }
+        public DateTime Date { get; set; }
+        public List<string> SavedFileList { get; set; }
+
+        public FileModel()
+        {
+            SavedFileList = new List<string>();
+        }
     }
 
     public class FileResultModel
